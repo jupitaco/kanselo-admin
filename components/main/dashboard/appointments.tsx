@@ -1,6 +1,7 @@
 "use client";
 
 import { Calendar } from "@/components/ui/formInput/datePicker/calendar";
+import { topMentors } from "@/mock";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -13,25 +14,29 @@ export const Appointments = () => {
       id: 1,
       title: "How to grow a profitable eCommerce Business",
       mentor: "Adrian Solomon",
-      time: "10:30am",
+      startTime: "10:30am",
+      endTime: "12:30am",
       date: new Date(),
-      image: "/images/mentor1.png",
+      mentorImage: "/images/mentor1.png",
+      menteeImage: "/images/mentor4.png",
     },
     {
       id: 2,
       title: "How to grow a profitable eCommerce Business",
       mentor: "Adrian Solomon",
-      time: "10:30am",
-      date: new Date(),
-      image: "/images/mentor1.png",
+      startTime: "10:30am",
+      endTime: "12:30am", date: new Date(),
+      mentorImage: "/images/mentor3.png",
+      menteeImage: "/images/mentor2.png",
     },
     {
       id: 3,
       title: "How to grow a profitable eCommerce Business",
       mentor: "Adrian Solomon",
-      time: "10:30am",
-      date: new Date(),
-      image: "/images/mentor1.png",
+      startTime: "10:30am",
+      endTime: "12:30am", date: new Date(),
+      mentorImage: "/images/reviewer1.png",
+      menteeImage: "/images/reviewer4.png",
     },
   ];
 
@@ -57,25 +62,63 @@ export const Appointments = () => {
         </article>
 
         {/* Appointments List */}
-        <ul className="divide-Line space-y-4 divide-y">
+        <ul className=" space-y-4  ">
           {filteredAppointments.map((appointment) => (
-            <li key={appointment.id} className="flex items-center gap-4 pb-4">
-              <Image
-                src={appointment.image}
-                alt={appointment.mentor}
-                className="rounded object-cover"
-                width={48}
-                height={48}
-              />
-              <div className="flex-1">
-                <h5 className="font-medium">{appointment.title}</h5>
-                <p className="text-grey-300 text-xs">
-                  {appointment.mentor} • {appointment.time}
-                </p>
+            <li key={appointment.id} className="flex overflow-hidden gap-1 card">
+              <div className="w-4 min-h-full bg-secondary" />
+              <div className="flex items-center gap-4 p-2 group">
+
+                <div className="flex-1">
+                  <h5 className="font-medium">{appointment.title}</h5>
+                  <p className="text-grey-300 text-xs">
+                    {appointment.startTime} - {appointment.endTime}
+                  </p>
+                </div>
+                <div className="flex">
+
+                  <Image
+                    src={appointment.mentorImage}
+                    alt={appointment.mentor}
+                    className="rounded-xl object-cover border-3 border-white"
+                    width={48}
+                    height={48}
+                  />
+                  <Image
+                    src={appointment.menteeImage}
+                    alt={appointment.mentor}
+                    className="rounded-xl shadow-md object-cover -translate-x-5 group-hover:translate-x-0 transition-transform ease-in-out border-3 border-white"
+                    width={48}
+                    height={48}
+                  />
+                </div>
               </div>
             </li>
           ))}
         </ul>
+
+
+        <article className="space-y-4">
+          <h4> Top Mentors</h4>
+          <ul className="space-y-3 divide-Line divide-y">
+            {
+              topMentors.map(({ name, totalCalls, image }, idx) => (
+                <li key={idx} className="flex  items-center gap-3 pb-2">
+
+                  <Image src={image} alt={name}
+                    className="rounded-xl object-cover border-3 border-white"
+                    width={48}
+                    height={48} />
+
+                  <div>
+                    <p className="font-medium ">{name}</p>
+                    <small className="text-grey-300">{totalCalls} Consultations</small>
+                  </div>
+
+                </li>
+              ))
+            }
+          </ul>
+        </article>
       </div>
     </aside>
   );

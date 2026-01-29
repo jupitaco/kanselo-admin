@@ -46,11 +46,13 @@
   --color-error-50: #fef3f2;
   --color-error-100: #ffe8da;
   --color-error-300: #f42c1c;
+  --color-error-400: #FF5347;
   --color-error-500: #93162d;
   --color-success: #20b958;
   --color-success-50: #e9f8ee;
   --color-success-100: #eafcd9;
   --color-success-500: #59cc3d;
+  --color-success-600: #3CAF2C;
   --color-success-700: #24921e;
   --color-success-900: #0b6114;
   --color-Line: #e7e7e7;

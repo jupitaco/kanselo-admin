@@ -1,3 +1,6 @@
+export type AllAssets = Mentor | Template | Review
+
+
 export type Mentor = {
   id: string;
   name: string;
@@ -14,6 +17,7 @@ export type Mentor = {
   averageRating: number;
   totalConsultation: number;
   sessionRate: number;
+  email: string
 };
 
 export type Review = {

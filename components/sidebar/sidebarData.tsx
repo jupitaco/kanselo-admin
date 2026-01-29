@@ -2,6 +2,7 @@ import {
   CalendarIcon,
   DashboardIcon,
   SettingsIcon,
+  TemplateIcon,
   TicketStarIcon,
 } from "@/public/svgs/svgs";
 
@@ -10,6 +11,11 @@ export const SidebarData = [
     icon: <DashboardIcon />,
     title: "Dashboard",
     url: "/dashboard",
+  },
+  {
+    icon: <TemplateIcon />,
+    title: "Verifications",
+    url: "/verifications",
   },
   {
     icon: <CalendarIcon />,

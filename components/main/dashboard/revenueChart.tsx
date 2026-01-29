@@ -39,6 +39,7 @@ export default function RevenueChart({
     },
     xaxis: {
       categories: ctg,
+      // labels: { show: false }
     },
     yaxis: {
 

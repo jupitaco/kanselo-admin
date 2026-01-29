@@ -1,7 +1,11 @@
+'use client'
+
 import Image from "next/image";
 import CopyToClipboardBtn from "../copyToClipboardBtn";
 import { GoDotFill } from "react-icons/go";
 import { getStatusColors } from "@/utils/helper";
+import TableComponent, { Column } from "./tableComponent";
+import { AllAssets } from "@/types/global";
 
 export const OrderedID = ({ id }: { id: string }) => {
   return (
@@ -43,3 +47,14 @@ export const AvatarCard = ({
     </div>
   );
 };
+
+
+export default function TableWrapper({ title, columns, data }: { title: string; columns: Column<AllAssets>[]; data: AllAssets[] }) {
+  return (
+    <TableComponent
+      title={title}
+      columns={columns}
+      data={data}
+    />
+  );
+}

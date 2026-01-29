@@ -1,8 +1,9 @@
 import { Appointments } from "@/components/main/dashboard/appointments";
-import RecentBookings from "@/components/main/dashboard/recentBookings";
+import RecentMentorApplications from "@/components/main/dashboard/recentMentorApplications";
 import RenderRevenue from "@/components/main/dashboard/renderRevenue";
 import { Stats } from "@/components/main/dashboard/stats";
 import { Welcome } from "@/components/main/dashboard/welcome";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -14,13 +15,13 @@ export default function Page() {
         <RenderRevenue />
 
         <section className="space-y-6 rounded-xl bg-white p-5">
-          <article>
-            <h4>Recent Consultations</h4>
-            <p className="text-grey-400 text-sm">
-              View your most recent consultations
-            </p>
+          <article className="flex flex-wrap justify-between gap-3">
+            <h4>Recent Mentor Application</h4>
+            <Link href='/verifications' className="px-3 py-2 card hover:bg-secondary hover:text-white">
+              See All
+            </Link>
           </article>
-          <RecentBookings />
+          <RecentMentorApplications />
         </section>
       </section>
 

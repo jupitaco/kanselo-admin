@@ -1,5 +1,6 @@
 import { BookingActions } from "@/components/main/booking/bookingActions";
 import { TemplateAction } from "@/components/main/templates/templateAction";
+import { MentorReqAction } from "@/components/main/verifications/verificationActions";
 import { StarRatings } from "@/components/ui/starRatings";
 import {
   AvatarCard,
@@ -11,6 +12,8 @@ import { Mentor, Review, Template, BookingTime } from "@/types/global";
 import { TransactionType } from "@/types/payout";
 import { formatNumInThousands } from "@/utils/helper";
 import { ReactNode } from "react";
+
+
 export const filterData = [
   {
     label: "All",
@@ -68,6 +71,60 @@ export const filterData = [
 
 export const mentorsData: Mentor[] = [
   {
+    id: "111",
+    name: "Ryan Renold",
+    location: "Toronto, Canada",
+    title: "How to grow a profitable eCommerce Business",
+    description:
+      "19 years of product marketing experience, starting at Apple in the early days of our online music initiatives. Named as Top 30 under 30 by Marketing Magazine. I can help clarify your idea and advise on growth tactics",
+    bio: "19 years of product marketing experience, starting at Apple in the early days of our online music initiatives. Named as Top 30 under 30 by Marketing Magazine. I can help clarify your idea and advise on growth tactics",
+    price: 10000.0,
+    sessionRate: 10.0,
+    image: "/images/spotlight1.png",
+    rating: 5.0,
+    averageRating: 5.0,
+    reviews: 821,
+    totalConsultation: 821,
+    category: "Business Strategy & Marketing",
+    email: "richardherderson@gmail.com"
+  },
+  {
+    id: "112",
+    name: "John Olaniyi",
+    location: "Toronto, Canada",
+    title: "How to grow a profitable eCommerce Business",
+    description:
+      "19 years of product marketing experience, starting at Apple in the early days of our online music initiatives. Named as Top 30 under 30 by Marketing Magazine. I can help clarify your idea and advise on growth tactics",
+    bio: "19 years of product marketing experience, starting at Apple in the early days of our online music initiatives. Named as Top 30 under 30 by Marketing Magazine. I can help clarify your idea and advise on growth tactics",
+    price: 10000.0,
+    sessionRate: 10.0,
+    image: "/images/spotlight2.png",
+    rating: 5.0,
+    averageRating: 5.0,
+    reviews: 821,
+    totalConsultation: 821,
+    category: "Business Strategy & Marketing",
+    email: "richardherderson@gmail.com"
+  },
+  {
+    id: "123",
+    name: "Devon Lane",
+    location: "Toronto, Canada",
+    title: "How to grow a profitable eCommerce Business",
+    description:
+      "19 years of product marketing experience, starting at Apple in the early days of our online music initiatives. Named as Top 30 under 30 by Marketing Magazine. I can help clarify your idea and advise on growth tactics",
+    bio: "19 years of product marketing experience, starting at Apple in the early days of our online music initiatives. Named as Top 30 under 30 by Marketing Magazine. I can help clarify your idea and advise on growth tactics",
+    price: 10000.0,
+    sessionRate: 10.0,
+    image: "/images/spotlight3.png",
+    rating: 5.0,
+    averageRating: 5.0,
+    reviews: 821,
+    totalConsultation: 821,
+    category: "Business Strategy & Marketing",
+    email: "richardherderson@gmail.com"
+  },
+  {
     id: "1",
     name: "Adrian Solomon",
     location: "Toronto, Canada",
@@ -83,6 +140,7 @@ export const mentorsData: Mentor[] = [
     reviews: 821,
     totalConsultation: 821,
     category: "Business Strategy & Marketing",
+    email: "richardherderson@gmail.com"
   },
   {
     id: "2",
@@ -99,6 +157,7 @@ export const mentorsData: Mentor[] = [
     averageRating: 5,
     reviews: 10,
     totalConsultation: 10,
+    email: "richardherderson@gmail.com",
     category: "Mental Health",
   },
   {
@@ -116,25 +175,27 @@ export const mentorsData: Mentor[] = [
     averageRating: 5,
     reviews: 10,
     totalConsultation: 10,
+    email: "richardherderson@gmail.com",
     category: "Business Strategy & Marketing",
   },
-  {
-    id: "4",
-    name: "Dr. Emily Rodriguez",
-    location: "Los Angeles, USA",
-    title: "Healthcare - Target and Close Customers",
-    description:
-      "Experienced 7 Figures Restaurant Owner, with 15 years experience and a lot of knowledge to share.",
-    bio: "Experienced 7 Figures Restaurant Owner, with 15 years experience and a lot of knowledge to share.",
-    price: 15500.0,
-    sessionRate: 15500.0,
-    image: "/images/mentor4.png",
-    rating: 5,
-    averageRating: 5,
-    reviews: 10,
-    totalConsultation: 10,
-    category: "Healthcare",
-  },
+  // {
+  //   id: "4",
+  //   name: "Dr. Emily Rodriguez",
+  //   location: "Los Angeles, USA",
+  //   title: "Healthcare - Target and Close Customers",
+  //   description:
+  //     "Experienced 7 Figures Restaurant Owner, with 15 years experience and a lot of knowledge to share.",
+  //   bio: "Experienced 7 Figures Restaurant Owner, with 15 years experience and a lot of knowledge to share.",
+  //   price: 15500.0,
+  //   sessionRate: 15500.0,
+  //   image: "/images/mentor4.png",
+  //   rating: 5,
+  //   averageRating: 5,
+  //   reviews: 10,
+  //   totalConsultation: 10,
+  //   email: "richardherderson@gmail.com",
+  //   category: "Healthcare",
+  // },
 ];
 
 export const notifsData = [
@@ -640,6 +701,37 @@ export const recentBookingColData: Column<BookingType>[] = [
 
 ]
 
+export const recentMentorsColData: Column<Mentor & { action?: ReactNode }>[] = [
+  {
+    title: "MENTOR",
+    key: "name",
+    render: (_, record) => (
+      <AvatarCard
+        image={record?.image}
+        label={`${record?.name}`}
+      />
+    ),
+  },
+  {
+    title: "LOCATION",
+    key: "location",
+    render: (_, record) => (
+      <>
+        {record.location}
+
+      </>
+    ),
+  },
+
+  {
+    title: "ACTION",
+    key: "action",
+    render: (_, record) => <MentorReqAction data={record} recent />,
+  },
+
+
+]
+
 export const callRatings = [
   {
     emoji: "🤢",
@@ -847,5 +939,29 @@ export const officeHours: OfficeDay[] = [
   },
   {
     title: "Saturday", checked: false, time: []
+  },
+];
+
+export const topMentors = [
+  {
+    name: "Jerome Bell",
+    totalCalls: 521,
+    image: "/images/mentor1.png",
+  },
+  {
+    name: "Jane Cooper",
+    totalCalls: 522,
+    image: "/images/mentor2.png",
+  },
+  {
+
+    name: "Floyd Miles",
+    totalCalls: 490,
+    image: "/images/mentor3.png",
+  },
+  {
+    name: "Leslie Alexander",
+    totalCalls: 440,
+    image: "/images/mentor4.png",
   },
 ];
