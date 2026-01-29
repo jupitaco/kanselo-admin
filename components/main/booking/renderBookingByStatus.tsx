@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import BookingTable from "./bookingTable";
 
-export default function CompletedBookings() {
+export default function RenderBookingByStatus() {
   return (
     <Suspense>
       <BookingTable />

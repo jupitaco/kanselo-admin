@@ -50,23 +50,22 @@ const ActionModals: React.FC<IRejecrOrder> = ({
     >
       <section>
 
-        <DialogFooter>
-          <article className="mt-5 flex justify-end gap-3">
-            <DialogClose asChild>
-              <Button type="button" className={btnSecClass}>
-                {closeTitle}
-              </Button>
-            </DialogClose>
-
-            <Button
-              className={cn("pry-btn", btnMainClass)}
-              type="button"
-              onClick={action}
-              loading={loading}
-            >
-              {actionTitle}
+        <DialogFooter className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <DialogClose asChild>
+            <Button type="button" className={btnSecClass}>
+              {closeTitle}
             </Button>
-          </article>
+          </DialogClose>
+
+          <Button
+            className={cn("pry-btn", btnMainClass)}
+            type="button"
+            onClick={action}
+            loading={loading}
+          >
+            {actionTitle}
+          </Button>
+
         </DialogFooter>
       </section>
     </ModalWrapper>

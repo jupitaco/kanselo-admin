@@ -1,6 +1,5 @@
-import { BookingActions } from "@/components/main/booking/bookingActions";
-import { TemplateAction } from "@/components/main/templates/templateAction";
-import { MentorReqAction } from "@/components/main/verifications/verificationActions";
+import { MentorReqAction } from "@/components/main/verifications/components";
+import Button from "@/components/ui/button";
 import { StarRatings } from "@/components/ui/starRatings";
 import {
   AvatarCard,
@@ -12,6 +11,7 @@ import { Mentor, Review, Template, BookingTime } from "@/types/global";
 import { TransactionType } from "@/types/payout";
 import { formatNumInThousands } from "@/utils/helper";
 import { ReactNode } from "react";
+import { FaEye } from "react-icons/fa6";
 
 
 export const filterData = [
@@ -85,7 +85,9 @@ export const mentorsData: Mentor[] = [
     averageRating: 5.0,
     reviews: 821,
     totalConsultation: 821,
+    totalTemplatesSold: 5,
     category: "Business Strategy & Marketing",
+    phoneNumber: "+234 816 624 9033",
     email: "richardherderson@gmail.com"
   },
   {
@@ -103,7 +105,9 @@ export const mentorsData: Mentor[] = [
     averageRating: 5.0,
     reviews: 821,
     totalConsultation: 821,
+    totalTemplatesSold: 5,
     category: "Business Strategy & Marketing",
+    phoneNumber: "+234 816 624 9033",
     email: "richardherderson@gmail.com"
   },
   {
@@ -121,7 +125,9 @@ export const mentorsData: Mentor[] = [
     averageRating: 5.0,
     reviews: 821,
     totalConsultation: 821,
+    totalTemplatesSold: 5,
     category: "Business Strategy & Marketing",
+    phoneNumber: "+234 816 624 9033",
     email: "richardherderson@gmail.com"
   },
   {
@@ -139,7 +145,9 @@ export const mentorsData: Mentor[] = [
     averageRating: 5.0,
     reviews: 821,
     totalConsultation: 821,
+    totalTemplatesSold: 5,
     category: "Business Strategy & Marketing",
+    phoneNumber: "+234 816 624 9033",
     email: "richardherderson@gmail.com"
   },
   {
@@ -157,8 +165,10 @@ export const mentorsData: Mentor[] = [
     averageRating: 5,
     reviews: 10,
     totalConsultation: 10,
+    totalTemplatesSold: 5,
     email: "richardherderson@gmail.com",
     category: "Mental Health",
+    phoneNumber: "+234 816 624 9033"
   },
   {
     id: "3",
@@ -175,8 +185,10 @@ export const mentorsData: Mentor[] = [
     averageRating: 5,
     reviews: 10,
     totalConsultation: 10,
+    totalTemplatesSold: 5,
     email: "richardherderson@gmail.com",
     category: "Business Strategy & Marketing",
+    phoneNumber: "+234 816 624 9033"
   },
   // {
   //   id: "4",
@@ -195,6 +207,7 @@ export const mentorsData: Mentor[] = [
   //   totalConsultation: 10,
   //   email: "richardherderson@gmail.com",
   //   category: "Healthcare",
+  // phoneNumber:"+234 816 624 9033"
   // },
 ];
 
@@ -272,6 +285,35 @@ export const reviewsData: Review[] = [
   },
 ];
 
+export const reviewColData: Column<Review>[] = [
+  {
+    title: "CUSTOMER",
+    key: "name",
+    render: (_, record) => (
+      <AvatarCard
+        image={record?.image}
+        label={`${record?.name}`}
+        subtext={record?.date}
+      />
+    ),
+  },
+
+  {
+    title: "REVIEW",
+    key: "text",
+    cellClassName: "min-w-40 max-w-40 text-grey-300",
+    render: (_, record) => <>{record?.text} </>,
+  },
+
+  {
+    title: "STARS",
+    key: "rating",
+    render: (_, record) => <StarRatings rating={record?.rating} />,
+  },
+
+];
+
+
 export const sessionData = [
   {
     label: "1 (30 minutes - $10)",
@@ -319,46 +361,31 @@ export const templateData: Template[] = [
 
 export const templateColData: Column<Template & { action?: ReactNode }>[] = [
   {
-    title: "MENTOR",
+    title: "TITLE",
     key: "title",
     render: (_, record) => (
       <AvatarCard
         image={record?.image}
         label={`${record?.title}`}
+        subtext={record?.size}
       />
     ),
   },
-  {
-    title: "DATE ADDED",
-    key: "createdAt",
-    cellClassName: "text-grey-300",
-    render: (_, record) => (
-      <>
-        {record.createdAt} <br />
-
-      </>
-    ),
-  },
 
   {
-    title: "PRICE",
+    title: "AMOUNT",
     key: "price",
     render: (_, record) => <>${formatNumInThousands(record?.price)} </>,
   },
 
   {
-    title: "AMOUNT SOLD",
+    title: "SOLD",
     key: "totalSales",
     cellClassName: " text-center",
 
     render: (_, record) => <>{record?.totalSales}</>,
   },
-  {
-    title: "ACTION",
-    key: "action",
-    cellClassName: "min-w-40 max-w-80 text-grey-300",
-    render: (_, record) => <TemplateAction data={record} />,
-  },
+
 ];
 
 export const bookingTimeData: BookingTime[] = [
@@ -418,8 +445,14 @@ export const bookingTimeData: BookingTime[] = [
 export const bookingAssets: BookingType[] = [
   {
     id: "1",
-    name: "Anna Mulana",
-    avatar: "/images/reviewer1.png",
+    mentor: {
+      name: "Anna Mulana",
+      avatar: "/images/reviewer1.png",
+    },
+    mentee: {
+      name: "Robert Fox",
+      avatar: "/images/mentor1.png",
+    },
     location: { city: "Toronto", country: "Canada" },
     date: "03 Jan 2023",
     time: "11:30 AM",
@@ -431,8 +464,14 @@ export const bookingAssets: BookingType[] = [
   },
   {
     id: "2",
-    name: "Shuri Bashuri",
-    avatar: "/images/reviewer2.png",
+    mentor: {
+      name: "Shuri Bashuri",
+      avatar: "/images/reviewer2.png",
+    },
+    mentee: {
+      name: "Robert Fox",
+      avatar: "/images/mentor2.png",
+    },
     location: { city: "Toronto", country: "Canada" },
     date: "03 Jan 2023",
     time: "11:30 AM",
@@ -444,8 +483,14 @@ export const bookingAssets: BookingType[] = [
   },
   {
     id: "3",
-    name: "Gwen Stacy",
-    avatar: "/images/reviewer3.png",
+    mentor: {
+      name: "Gwen Stacy",
+      avatar: "/images/reviewer3.png",
+    },
+    mentee: {
+      name: "Robert Fox",
+      avatar: "/images/mentor3.png",
+    },
     location: { city: "Toronto", country: "Canada" },
     date: "03 Jan 2023",
     time: "11:30 AM",
@@ -458,8 +503,14 @@ export const bookingAssets: BookingType[] = [
   },
   {
     id: "4",
-    name: "John Kenedy",
-    avatar: "/images/reviewer4.png",
+    mentor: {
+      name: "John Kenedy",
+      avatar: "/images/reviewer4.png",
+    },
+    mentee: {
+      name: "Robert Fox",
+      avatar: "/images/mentor4.png",
+    },
     location: { city: "Toronto", country: "Canada" },
     date: "03 Jan 2023",
     time: "11:30 AM",
@@ -472,8 +523,14 @@ export const bookingAssets: BookingType[] = [
   },
   {
     id: "5",
-    name: "Jack Markojek",
-    avatar: "/images/reviewer6.png",
+    mentor: {
+      name: "Jack Markojek",
+      avatar: "/images/reviewer1.png",
+    },
+    mentee: {
+      name: "Robert Fox",
+      avatar: "/images/mentor3.png",
+    },
     location: { city: "Toronto", country: "Canada" },
     date: "03 Jan 2023",
     time: "11:30 AM",
@@ -486,8 +543,14 @@ export const bookingAssets: BookingType[] = [
   },
   {
     id: "6",
-    name: "Frank Zain",
-    avatar: "/images/reviewer1.png",
+    mentor: {
+      name: "Frank Zain",
+      avatar: "/images/reviewer1.png",
+    },
+    mentee: {
+      name: "Robert Fox",
+      avatar: "/images/mentor2.png",
+    },
     location: { city: "Toronto", country: "Canada" },
     date: "03 Jan 2023",
     time: "11:30 AM",
@@ -499,8 +562,14 @@ export const bookingAssets: BookingType[] = [
   },
   {
     id: "7",
-    name: "Ryan Renold",
-    avatar: "/images/reviewer2.png",
+    mentor: {
+      name: "Ryan Renold",
+      avatar: "/images/reviewer1.png",
+    },
+    mentee: {
+      name: "Robert Fox",
+      avatar: "/images/mentor1.png",
+    },
     location: { city: "Toronto", country: "Canada" },
     date: "03 Jan 2023",
     time: "11:30 AM",
@@ -513,8 +582,15 @@ export const bookingAssets: BookingType[] = [
   },
   {
     id: "8",
-    name: "Jesica Janee",
-    avatar: "/images/reviewer3.png",
+
+    mentor: {
+      name: "Jesica Janee",
+      avatar: "/images/reviewer3.png",
+    },
+    mentee: {
+      name: "Robert Fox",
+      avatar: "/images/mentor4.png",
+    },
     location: { city: "Toronto", country: "Canada" },
     date: "03 Jan 2023",
     time: "11:30 AM",
@@ -527,8 +603,14 @@ export const bookingAssets: BookingType[] = [
   },
   {
     id: "9",
-    name: "Daniel Alveson",
-    avatar: "/images/reviewer6.png",
+    mentor: {
+      name: "Daniel Alveson",
+      avatar: "/images/reviewer3.png",
+    },
+    mentee: {
+      name: "Robert Fox",
+      avatar: "/images/mentor1.png",
+    },
     location: { city: "Toronto", country: "Canada" },
     date: "03 Jan 2023",
     time: "11:30 AM",
@@ -541,14 +623,25 @@ export const bookingAssets: BookingType[] = [
   },
 ];
 
-export const newBookingColData: Column<BookingType & { action?: ReactNode }>[] = [
+export const newBookingColData: Column<BookingType>[] = [
   {
-    title: "MENTOR",
-    key: "name",
+    title: "MENTEE",
+    key: "mentee",
     render: (_, record) => (
       <AvatarCard
-        image={record?.avatar}
-        label={`${record?.name}`}
+        image={record?.mentee?.avatar}
+        label={`${record?.mentee?.name}`}
+        subtext={`${record?.location?.city} ${record?.location?.country}`}
+      />
+    ),
+  },
+  {
+    title: "MENTOR",
+    key: "mentor",
+    render: (_, record) => (
+      <AvatarCard
+        image={record?.mentor?.avatar}
+        label={`${record?.mentor?.name}`}
         subtext={`${record?.location?.city} ${record?.location?.country}`}
       />
     ),
@@ -556,7 +649,6 @@ export const newBookingColData: Column<BookingType & { action?: ReactNode }>[] =
   {
     title: "DATE & TIME",
     key: "date",
-    cellClassName: "text-grey-300",
     render: (_, record) => (
       <>
         {record.date} <br />
@@ -574,94 +666,7 @@ export const newBookingColData: Column<BookingType & { action?: ReactNode }>[] =
   {
     title: "MESSAGE",
     key: "review",
-    cellClassName: "min-w-40 max-w-40 text-grey-300",
-    render: (_, record) => <>{record?.review}</>,
-  },
-  {
-    title: "ACTION",
-    key: "action",
-    cellClassName: "min-w-40 max-w-80 text-grey-300",
-    render: (_, record) => <BookingActions data={record} />,
-  },
-];
-
-export const completedBookingColData: Column<BookingType & { action?: ReactNode }>[] = [
-  {
-    title: "MENTOR",
-    key: "name",
-    render: (_, record) => (
-      <AvatarCard
-        image={record?.avatar}
-        label={`${record?.name}`}
-        subtext={`${record?.location?.city} ${record?.location?.country}`}
-      />
-    ),
-  },
-  {
-    title: "DATE & TIME",
-    key: "date",
-    cellClassName: "text-grey-300",
-    render: (_, record) => (
-      <>
-        {record.date} <br />
-        {record.time}
-      </>
-    ),
-  },
-
-  {
-    title: "SESSION",
-    key: "sessions",
-    render: (_, record) => <>{record?.sessions} </>,
-  },
-
-  {
-    title: "MESSAGE",
-    key: "review",
-    cellClassName: "min-w-40 max-w-40 text-grey-300",
-    render: (_, record) => <>{record?.review}</>,
-  },
-  {
-    title: "RATINGS",
-    key: "rating",
-    render: (_, record) => <StarRatings rating={record?.rating} />,
-  },
-];
-
-export const cancelledBookingColData: Column<BookingType>[] = [
-  {
-    title: "MENTOR",
-    key: "name",
-    render: (_, record) => (
-      <AvatarCard
-        image={record?.avatar}
-        label={`${record?.name}`}
-        subtext={`${record?.location?.city} ${record?.location?.country}`}
-      />
-    ),
-  },
-  {
-    title: "DATE & TIME",
-    key: "date",
-    cellClassName: "text-grey-300",
-    render: (_, record) => (
-      <>
-        {record.date} <br />
-        {record.time}
-      </>
-    ),
-  },
-
-  {
-    title: "SESSION",
-    key: "sessions",
-    render: (_, record) => <>{record?.sessions} </>,
-  },
-
-  {
-    title: "MESSAGE",
-    key: "review",
-    cellClassName: "min-w-40 max-w-40 text-grey-300",
+    cellClassName: "min-w-40 max-w-40",
     render: (_, record) => <>{record?.review}</>,
   },
 
@@ -671,11 +676,11 @@ export const cancelledBookingColData: Column<BookingType>[] = [
 export const recentBookingColData: Column<BookingType>[] = [
   {
     title: "MENTOR",
-    key: "name",
+    key: "mentor",
     render: (_, record) => (
       <AvatarCard
-        image={record?.avatar}
-        label={`${record?.name}`}
+        image={record?.mentor?.avatar}
+        label={`${record?.mentor?.name}`}
         subtext={`${record?.location?.city} ${record?.location?.country}`}
       />
     ),
@@ -727,6 +732,57 @@ export const recentMentorsColData: Column<Mentor & { action?: ReactNode }>[] = [
     title: "ACTION",
     key: "action",
     render: (_, record) => <MentorReqAction data={record} recent />,
+  },
+
+
+]
+
+export const mentorsColData: Column<Mentor & { action?: ReactNode }>[] = [
+  {
+    title: "MENTOR",
+    key: "name",
+    render: (_, record) => (
+      <AvatarCard
+        image={record?.image}
+        label={`${record?.name}`}
+      />
+    ),
+  },
+  {
+    title: "EMAIL",
+    key: "email",
+    render: (_, record) => (
+      <>
+        {record.email}
+
+      </>
+    ),
+  },
+  {
+    title: "CONSULTATIONS",
+    key: "totalConsultation",
+    render: (_, record) => (
+      <>
+        {record.totalConsultation}
+
+      </>
+    ),
+  },
+  {
+    title: "TEMPLATES SOLD",
+    key: "totalTemplatesSold",
+    render: (_, record) => (
+      <>
+        {record.totalTemplatesSold}
+
+      </>
+    ),
+  },
+
+  {
+    title: "ACTION",
+    key: "action",
+    render: (_, record) => <Button link href={`mentors/view/${record?.id}?mentorName=${encodeURIComponent(record?.name)}`} className='outline-btn bg-grey-100 min-h-[35px] px-1!'> <FaEye /> View</Button>,
   },
 
 

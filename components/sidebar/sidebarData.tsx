@@ -1,6 +1,8 @@
 import {
   CalendarIcon,
   DashboardIcon,
+  MenteeIcon,
+  MentorIcon,
   SettingsIcon,
   TemplateIcon,
   TicketStarIcon,
@@ -23,14 +25,19 @@ export const SidebarData = [
     url: "/appointments",
   },
   {
-    icon: <CalendarIcon />,
-    title: "Templates",
-    url: "/templates",
+    icon: <MentorIcon />,
+    title: "Mentors",
+    url: "/mentors",
+  },
+  {
+    icon: <MenteeIcon />,
+    title: "Mentees",
+    url: "/mentees",
   },
   {
     icon: <TicketStarIcon />,
-    title: "Payouts",
-    url: "/payouts",
+    title: "Transactions",
+    url: "/transactions",
   },
 
   {

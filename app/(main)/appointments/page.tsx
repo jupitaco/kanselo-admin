@@ -1,5 +1,5 @@
-import RenderBookingByStatus from "@/components/main/booking/completedBooking";
-import Button from "@/components/ui/button";
+import RenderBookingByStatus from "@/components/main/booking/renderBookingByStatus";
+import Search from "@/components/ui/search";
 import { Metadata } from "next";
 import Link from "next/link";
 import React, { use } from "react";
@@ -24,9 +24,8 @@ export default function Pages({
   return (
     <main className="space-y-14 p-5">
       <header className="grid grid-cols-1 lg:grid-cols-3 items-center justify-between gap-4">
-        <article className="flex-1 space-y-2">
-          <h4>New appointments</h4>
-          <p>Manage your appointments</p>
+        <article className="space-y-2 capitalize">
+          <h4>{activeTab === "all" ? "New" : activeTab} appointments</h4>
         </article>
 
         <ul className="card flex min-h-10 w-full items-center justify-between gap-1 p-1 lg:w-fit">
@@ -43,13 +42,7 @@ export default function Pages({
         </ul>
 
         <div className="flex justify-end">
-          <Button
-            link
-            href="/appointments/schedule-settings"
-            className="outline-btn min-h-[38px]! bg-grey-100 text-grey-500! py-0! text-xs! w-full lg:w-fit">
-            <IoSettingsOutline />
-            Schedule setting
-          </Button>
+          <Search placeholder="Search" />
         </div>
       </header>
 

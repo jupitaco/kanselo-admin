@@ -16,8 +16,10 @@ export type Mentor = {
   bio: string;
   averageRating: number;
   totalConsultation: number;
+  totalTemplatesSold: number;
   sessionRate: number;
   email: string
+  phoneNumber: string
 };
 
 export type Review = {
