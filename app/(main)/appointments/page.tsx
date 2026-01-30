@@ -41,7 +41,7 @@ export default function Pages({
         </ul>
 
         <div className="flex justify-end">
-          <Search placeholder="Search" />
+          <Search placeholder="Search" className="max-w-fit" />
         </div>
       </header>
 

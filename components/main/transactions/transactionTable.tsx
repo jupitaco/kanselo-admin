@@ -21,6 +21,6 @@ export const TransactionTable = () => {
 
 export const TransactionAction = ({ data }: { data: TransactionType }) => {
   return (
-    <Button className='outline-btn bg-grey-100 min-h-[35px] px-3!'> <FaEye /> View</Button>
+    <Button className='outline-btn bg-grey-100 min-h-[35px]'> <FaEye /> View</Button>
   )
 }

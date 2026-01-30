@@ -782,7 +782,7 @@ export const mentorsColData: Column<Mentor & { action?: ReactNode }>[] = [
   {
     title: "ACTION",
     key: "action",
-    render: (_, record) => <Button link href={`mentors/view/${record?.id}?mentorName=${encodeURIComponent(record?.name)}`} className='outline-btn bg-grey-100 min-h-[35px] px-1!'> <FaEye /> View</Button>,
+    render: (_, record) => <Button link href={`mentors/view/${record?.id}?mentorName=${encodeURIComponent(record?.name)}`} className='outline-btn bg-grey-100 min-h-[35px]'> <FaEye /> View</Button>,
   },
 
 
@@ -833,7 +833,7 @@ export const menteesColData: Column<Mentor & { action?: ReactNode }>[] = [
   {
     title: "ACTION",
     key: "action",
-    render: (_, record) => <Button link href={`mentees/view/${record?.id}?menteeName=${encodeURIComponent(record?.name)}`} className='outline-btn bg-grey-100 min-h-[35px] px-1!'> <FaEye /> View</Button>,
+    render: (_, record) => <Button link href={`mentees/view/${record?.id}?menteeName=${encodeURIComponent(record?.name)}`} className='outline-btn bg-grey-100 min-h-[35px]'> <FaEye /> View</Button>,
   },
 
 

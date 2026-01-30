@@ -1,11 +1,9 @@
 "use client";
-
 import { WarningIcon } from "@/components/logout/logout";
 import Button from "@/components/ui/button";
 import FormInput from "@/components/ui/formInput";
 import ActionModals from "@/components/ui/modals/actionModals";
 import { useModalContext } from "@/context/modalContext";
-import { filterData } from "@/mock";
 import { AdminType } from "@/types/admin";
 import React from "react";
 import { useState } from "react";
@@ -15,7 +13,6 @@ export const CreateAdmin = () => {
   //   fullName: userData?.fullName || '',
   //   email: userData?.email || '',
   // });
-  const [edit, setEdit] = useState(false);
   const [select, setSelect] = useState<string>("");
 
 
@@ -56,89 +53,59 @@ export const CreateAdmin = () => {
   return (
     <form
       // action={formAction}
-      className="w-full space-y-4"
+      className="w-full max-w-lg space-y-4"
     >
       <section className="space-y-4">
         <article className="flex flex-wrap justify-between gap-4">
           <FormInput
-            id="yearsOfExperience"
-            name="yearsOfExperience"
+            id="fullName"
+            name="fullName"
             type="text"
-            label="Years of experience"
-            placeholder="Enter your years of experience"
+            label="Full Name"
+            placeholder="Enter name"
             className="w-full"
-            disabled={!edit}
             required
           />
 
           <FormInput
-            id="industry"
-            name="industry"
+            id="email"
+            name="email"
+            type="email"
+            label="Email"
+            placeholder="Enter email"
+            className="w-full"
+            required
+          />
+
+          <FormInput
+            id="role"
+            name="role"
             type="shadSelect"
-            label="Industry"
+            label="Role"
             placeholder="Select"
             value={select}
-            shadcnSelectData={filterData}
+            shadcnSelectData={[{ label: "Admin", value: "admin" }, { label: "Super Admin", value: "superAdmin" }]}
             onSelectItem={(e) => setSelect(e)}
             className="w-full"
-            disabled={!edit}
             required
           />
 
-          <FormInput
-            id="bio"
-            name="bio"
-            type="textarea"
-            label="Bio"
-            placeholder="Enter bio"
-            className="w-full"
-            disabled={!edit}
-            required
-          />
 
-          <FormInput
-            id="consultationFee"
-            name="consultationFee"
-            type="number"
-            label="Consultation fee (per session)"
-            placeholder="Enter fee"
-            className="w-full"
-            disabled={!edit}
-            required
-          />
         </article>
 
 
-        <div className="mt-9 flex items-center justify-end pt-5">
-          {edit ? (
-            <div className="flex gap-3">
-              <Button
-                className="outline-btn"
-                type="button"
-                onClick={() => setEdit(!edit)}
-              >
-                Cancel
-              </Button>
-              <Button
-                className="pry-btn"
-                type="submit"
-              // loading={isPending}
-              >
-                Save Changes
-              </Button>
-            </div>
-          ) : (
-            <div className="flex gap-3">
-              <Button
-                className="outline-btn text-center"
-                onClick={() => setEdit(!edit)}
-                type="button"
-              >
-                Edit
-              </Button>
-            </div>
-          )}
-        </div>
+
+
+        <Button
+          className="pry-btn w-full"
+          type="submit"
+        // loading={isPending}
+        >
+          Save
+        </Button>
+
+
+
       </section>
     </form>
   );
