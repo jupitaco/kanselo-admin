@@ -1,7 +1,7 @@
 
 import React from "react";
-import { RecentMentorApplicationTable } from "../table";
 import { mentorsData } from "@/mock";
+import { RecentMentorApplicationTable } from "../users/userComponents";
 
 export default function RecentMentorApplications() {
   return (

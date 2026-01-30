@@ -6,9 +6,7 @@ import FormInput from "@/components/ui/formInput";
 import ActionModals from "@/components/ui/modals/actionModals";
 import { useModalContext } from "@/context/modalContext";
 import { filterData } from "@/mock";
-import { allImages } from "@/public/images/images";
 import { AdminType } from "@/types/admin";
-import Image from "next/image";
 import React from "react";
 import { useState } from "react";
 

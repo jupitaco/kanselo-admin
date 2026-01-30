@@ -4,14 +4,16 @@ import { ApexChart } from "@/components/charts/apexChart";
 import numeral from 'numeral'
 import React from "react";
 
-export default function RevenueChart({
-  chartData,
-}: {
-  chartData?: {
-    data: number[];
-    name: string;
-  }[];
-}) {
+export default function RevenueChart(
+  //   {
+  //   chartData,
+  // }: {
+  //   chartData?: {
+  //     data: number[];
+  //     name: string;
+  //   }[];
+  // }
+) {
 
   const ctg = ['Jan', "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"]
 

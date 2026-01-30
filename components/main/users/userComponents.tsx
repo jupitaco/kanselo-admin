@@ -2,7 +2,14 @@
 import { adminAssets, admincolData, bookingAssets, menteesColData, mentorsColData, mentorsData, recentBookingColData, reviewColData, reviewsData, templateColData, templateData } from "@/mock";
 import React from "react";
 import TableComponent from "@/components/ui/tableComponent/tableComponent";
+import { Mentor } from "@/types/global";
 
+
+export const RecentMentorApplicationTable = ({ data }: { data: Mentor[] }) => {
+    return (
+        <TableComponent title='Mentors' columns={mentorsColData} data={data} />
+    )
+}
 
 export const MentorsTable = () => {
     return (

@@ -1,6 +1,6 @@
 
 
-import { ConsultationIcon, IncomeIcon, TemplateIcon, TemplatesIcon, UserIcon } from "@/public/svgs/svgs";
+import { ConsultationIcon, IncomeIcon, TemplatesIcon, } from "@/public/svgs/svgs";
 
 
 export const Stats = () => {

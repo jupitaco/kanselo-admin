@@ -3,7 +3,6 @@ import Search from "@/components/ui/search";
 import { Metadata } from "next";
 import Link from "next/link";
 import React, { use } from "react";
-import { IoSettingsOutline } from "react-icons/io5";
 
 export const metadata: Metadata = { title: "Appointments" };
 
