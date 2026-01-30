@@ -1,5 +1,5 @@
 
-import Transaction from "@/components/main/payouts/transactions";
+import Transaction from "@/components/main/transactions/transactions";
 import Search from "@/components/ui/search";
 import { Metadata } from "next";
 import React from "react";

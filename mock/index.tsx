@@ -1,4 +1,5 @@
-import { TransactionAction } from "@/components/main/payouts/transactionTable";
+import { AdminAction } from "@/components/main/settings/admin/createAdmin";
+import { TransactionAction } from "@/components/main/transactions/transactionTable";
 import { MentorReqAction } from "@/components/main/verifications/components";
 import Button from "@/components/ui/button";
 import { StarRatings } from "@/components/ui/starRatings";
@@ -7,6 +8,7 @@ import {
   OrderStatus,
 } from "@/components/ui/tableComponent/tabelComps";
 import { Column } from "@/components/ui/tableComponent/tableComponent";
+import { AdminType } from "@/types/admin";
 import { BookingType, OfficeDay, } from "@/types/booking";
 import { Mentor, Review, Template, BookingTime } from "@/types/global";
 import { TransactionType } from "@/types/payout";
@@ -1073,5 +1075,74 @@ export const topMentors = [
     name: "Leslie Alexander",
     totalCalls: 440,
     image: "/images/mentor4.png",
+  },
+];
+
+
+export const adminAssets: AdminType[] = [
+  {
+    id: '1',
+    name: "Anna Mulana",
+    email: "annamulan@gmail.com",
+    role: "Super Admin"
+  },
+  {
+    id: "2",
+    name: "Shuri Bashuri",
+    email: "annamulan@gmail.com",
+    role: "Admin"
+  },
+  {
+    id: '3',
+    name: "Gwen Stacy",
+    email: "annamulan@gmail.com",
+    role: "Admin"
+  },
+  {
+    id: "4",
+    name: "John Kenedy",
+    email: "annamulan@gmail.com",
+    role: "Admin"
+  },
+  {
+    id: "5",
+    name: "Anna Mulana",
+    email: "annamulan@gmail.com",
+    role: "Admin"
+  },
+
+];
+
+
+export const admincolData: Column<AdminType & { action?: ReactNode }>[] = [
+  {
+    title: "NAME",
+    key: "name",
+    render: (_, record) => <>{record?.name}</>,
+  },
+  {
+    title: "EMAIL",
+    key: "email",
+    render: (_, record) => (
+      <>
+        {record.email}
+      </>
+    ),
+  },
+  {
+    title: "ROLE",
+    key: "role",
+    render: (_, record) => (
+      <>
+        {record.role}
+      </>
+    ),
+  },
+
+
+  {
+    title: "ACTION",
+    key: "action",
+    render: (_, record) => <AdminAction data={record} />
   },
 ];

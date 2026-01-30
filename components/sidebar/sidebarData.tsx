@@ -52,13 +52,13 @@ export const SidebarData = [
       },
       {
         icon: null,
-        title: "Business",
-        url: "/settings/business",
+        title: "Security",
+        url: "/settings/security",
       },
       {
         icon: null,
-        title: "Security",
-        url: "/settings/security",
+        title: "Administrator",
+        url: "/settings/administrator",
       },
     ],
   },

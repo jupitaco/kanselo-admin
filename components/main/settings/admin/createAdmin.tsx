@@ -1,14 +1,18 @@
 "use client";
 
+import { WarningIcon } from "@/components/logout/logout";
 import Button from "@/components/ui/button";
 import FormInput from "@/components/ui/formInput";
+import ActionModals from "@/components/ui/modals/actionModals";
+import { useModalContext } from "@/context/modalContext";
 import { filterData } from "@/mock";
 import { allImages } from "@/public/images/images";
+import { AdminType } from "@/types/admin";
 import Image from "next/image";
 import React from "react";
 import { useState } from "react";
 
-export const Business = () => {
+export const CreateAdmin = () => {
   // const [formData, setFormData] = useState({
   //   fullName: userData?.fullName || '',
   //   email: userData?.email || '',
@@ -142,16 +146,48 @@ export const Business = () => {
   );
 };
 
-export const ChangeUserProfile = () => {
-  return (
-    <figure className="relative size-40 overflow-hidden rounded-full">
-      <Image
-        src={allImages.avatar}
-        alt=""
-        fill
-        sizes="100%"
-        className="object-cover"
+export const AdminAction = ({ data }: { data: AdminType }) => {
+  const { isOpen, openModal } = useModalContext();
+
+  return (<>
+
+    <div className="flex items-center gap-2">
+      <Button className="outline-btn bg-Line" onClick={() => openModal(`suspend-${data?.id}`)}>
+        Suspend
+      </Button>
+      <Button className="bg-error-100 border border-error-600" onClick={() => openModal(`delete-${data?.id}`)}>
+        Delete
+      </Button>
+    </div>
+
+
+    {isOpen[`suspend-${data?.id}`] && (
+      <ActionModals
+        icon={<WarningIcon />}
+        id={`suspend-${data?.id}`}
+        title="Suspend Admin"
+        subTitle="Are you sure you want to suspend this admin?"
+        subtitleClass="text-grey-300!"
+        actionTitle="Yes, Suspend"
+        closeTitle="No, Cancel"
+        btnSecClass="outline-btn"
+        action={() => { }}
       />
-    </figure>
+    )}
+
+    {isOpen[`delete-${data?.id}`] && (
+      <ActionModals
+        icon={<WarningIcon />}
+        id={`delete-${data?.id}`}
+        title="Delete Admin"
+        subTitle="Are you sure you want to delete this admin?"
+        subtitleClass="text-grey-300!"
+        actionTitle="Yes, Delete"
+        closeTitle="No, Cancel"
+        btnSecClass="outline-btn"
+        action={() => { }}
+      />
+    )}
+  </>
   );
 };
