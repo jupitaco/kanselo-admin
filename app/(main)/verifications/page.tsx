@@ -28,7 +28,7 @@ export default function Pages({
           {tabData.map(({ label, path }, idx) => (
             <li key={idx}>
               <Link
-                href={`/appointments?tab=${path}`}
+                href={`/verifications?tab=${path}`}
                 className={`text-xs font-medium ${activeTab === path ? "bg-primary rounded-lg text-white" : ""} px-4 md:px-7 py-2`}
               >
                 {label}

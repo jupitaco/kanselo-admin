@@ -15,6 +15,7 @@ import {
     RadioGroupItem,
 } from "@/components/ui/formInput/radio/radioGroup";
 import FormInput from "@/components/ui/formInput";
+import { useSearchParams } from "next/navigation";
 
 export const MentorAvatar = ({ image, name, location }: Mentor) => {
     return (
@@ -123,7 +124,9 @@ export const MentorReqAction = ({
     recent?: boolean;
     data: Mentor;
 }) => {
-    const { isOpen, openModal } = useModalContext();
+    const searchParams = useSearchParams()
+    const activeTab = searchParams.get("tab")
+    const { isOpen, openModal, } = useModalContext();
     return (
         <>
             {recent ? (
@@ -139,19 +142,26 @@ export const MentorReqAction = ({
                     </button>
                 </div>
             ) : (
-                <div className="space-y-3">
-                    <Button
-                        className="pry-btn w-full"
-                        onClick={() => openModal(`approve-${data?.id}`)}>
-                        Approve
-                    </Button>
-                    <Button
-                        className="alt-btn w-full"
-                        onClick={() => openModal(`decline-${data?.id}`)}
-                    >
-                        Decline
-                    </Button>
-                </div>
+
+                <>
+                    {
+                        activeTab === 'approved' ? "" :
+                            <div className="space-y-3">
+                                <Button
+                                    className="pry-btn w-full"
+                                    onClick={() => openModal(`approve-${data?.id}`)}>
+                                    Approve
+                                </Button>
+                                {activeTab !== 'declined' && <Button
+                                    className="alt-btn w-full"
+                                    onClick={() => openModal(`decline-${data?.id}`)}
+                                >
+                                    Decline
+                                </Button>}
+                            </div>
+
+                    }
+                </>
             )}
 
             {isOpen[`approve-${data?.id}`] && (

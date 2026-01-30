@@ -4,8 +4,10 @@ import Button from "@/components/ui/button";
 import FormInput from "@/components/ui/formInput";
 import { allImages } from "@/public/images/images";
 import Image from "next/image";
-import React from "react";
+import React, { ReactNode } from "react";
 import { useState } from "react";
+import banner from "@/public/svgs/settings-banner.svg";
+import { usePathname } from "next/navigation";
 
 export const Basic = () => {
   // const [formData, setFormData] = useState({
@@ -121,7 +123,7 @@ export const Basic = () => {
               <Button
                 className="pry-btn"
                 type="submit"
-                // loading={isPending}
+              // loading={isPending}
               >
                 Save Changes
               </Button>
@@ -156,3 +158,33 @@ export const ChangeUserProfile = () => {
     </figure>
   );
 };
+
+
+export const LayoutWrapper = ({ children }: { children: ReactNode }) => {
+
+  const path = usePathname()
+
+  if (path.includes('/settings/administrator')) {
+
+    return (
+      <>
+        {children}
+      </>
+    )
+
+  }
+
+
+  return (
+    <section className="overflow-hidden rounded-lg bg-white">
+      <div className="relative h-70 w-full">
+        <Image src={banner} alt="" className="size-full object-cover" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rounded-full bg-white p-2">
+          <ChangeUserProfile />
+        </div>
+      </div>
+
+      <section className="mt-20 px-2 py-5 md:px-10">{children}</section>
+    </section>
+  )
+}

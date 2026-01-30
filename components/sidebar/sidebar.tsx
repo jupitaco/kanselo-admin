@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import BrandLogo from "../ui/brandLogo";
 import { useModalContext } from "@/context/modalContext";
 import Logout from "../logout/logout";
-import { HelpCenter } from "./helpCenter";
 import { FaChevronDown } from "react-icons/fa6";
 import { Fragment, ReactNode, useState } from "react";
 
@@ -23,7 +22,6 @@ const Sidebar = () => {
           <Logout />
         </ul>
 
-        <HelpCenter />
       </article>
     </section>
   );
@@ -56,8 +54,8 @@ export const SidebarLink = ({ linkList }: { linkList: sidebarTypes[] }) => {
               <button
                 key={idx}
                 className={`${currentPath.includes(url)
-                    ? "sidebarActive"
-                    : "sidebarNotActive"
+                  ? "sidebarActive"
+                  : "sidebarNotActive"
                   } flex w-full items-center justify-between`}
                 onClick={() => setIsClicked(!isClicked)}
               >
@@ -82,8 +80,8 @@ export const SidebarLink = ({ linkList }: { linkList: sidebarTypes[] }) => {
                       key={idx}
                       href={url}
                       className={`${currentPath.includes(url)
-                          ? "sidebarActive bg-[#F9F9FB]!"
-                          : "sidebarNotActive"
+                        ? "sidebarActive bg-[#F9F9FB]!"
+                        : "sidebarNotActive"
                         } px-10!`}
                       onClick={() => setToggle(false)}
                     >
@@ -100,9 +98,8 @@ export const SidebarLink = ({ linkList }: { linkList: sidebarTypes[] }) => {
             <Link
               key={idx}
               href={url}
-              className={
-                currentPath.includes(url) ? "sidebarActive" : "sidebarNotActive"
-              }
+              className={`${currentPath.includes(url) ? "sidebarActive" : "sidebarNotActive"
+                }`}
               onClick={() => setToggle(false)}
             >
               <span className="flex items-center gap-2 text-sm">

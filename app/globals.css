@@ -192,11 +192,15 @@
 .sidebarActive {
   background: var(--color-white);
   color: var(--color-primary);
-  border-left: solid 1px var(--color-white);
+}
+
+
+.sidebarActive span svg  {
+   stroke: transparent ;
 }
 
 .sidebarNotActive {
-  color: var(--color-grey-400) !important;
+  color: var(--color-grey-400) ;
 }
 
 .sidebarActive,
@@ -204,6 +208,13 @@
   padding: 1em 1.3em 1em;
   border-radius: 10px;
   font-weight: 600;
+}
+
+.sidebarNotActive span svg  {
+  color: transparent !important;
+  stroke: var(--color-grey-400) ;
+  stroke-width: 1.5px;
+
 }
 
 .closeSidebar {
