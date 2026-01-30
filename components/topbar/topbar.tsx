@@ -1,5 +1,5 @@
 "use client";
- import Image from "next/image";
+import Image from "next/image";
 import { allImages } from "@/public/images/images";
 import Hambugger from "./hambugger";
 import "./navbar.css";
@@ -11,7 +11,7 @@ const TopBar = () => {
   // const rsp = await getCurrentUserApi();
   // const userData = rsp?.ok ? rsp?.body?.user : null;
 
-  const mentorName = searchParams.get("mentorName");
+  const mentorName = searchParams.get("mentorName") || searchParams.get("menteeName");
 
   const userData = {
     firstName: "Richard ",

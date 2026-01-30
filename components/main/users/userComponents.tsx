@@ -1,5 +1,5 @@
 'use client'
-import { bookingAssets, mentorsColData, mentorsData, recentBookingColData, reviewColData, reviewsData, templateColData, templateData } from "@/mock";
+import { bookingAssets, menteesColData, mentorsColData, mentorsData, recentBookingColData, reviewColData, reviewsData, templateColData, templateData } from "@/mock";
 import React from "react";
 import TableComponent from "@/components/ui/tableComponent/tableComponent";
 
@@ -33,6 +33,14 @@ export const MenteeConsultationTable = () => {
     );
 }
 
+
+export const MenteesTable = () => {
+
+    const data = [...mentorsData].reverse()
+    return (
+        <TableComponent title='Mentees' columns={menteesColData} data={data} />
+    )
+}
 
 
 

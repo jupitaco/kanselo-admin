@@ -688,7 +688,6 @@ export const recentBookingColData: Column<BookingType>[] = [
   {
     title: "DATE & TIME",
     key: "date",
-    cellClassName: "text-grey-300",
     render: (_, record) => (
       <>
         {record.date} <br />
@@ -783,6 +782,57 @@ export const mentorsColData: Column<Mentor & { action?: ReactNode }>[] = [
     title: "ACTION",
     key: "action",
     render: (_, record) => <Button link href={`mentors/view/${record?.id}?mentorName=${encodeURIComponent(record?.name)}`} className='outline-btn bg-grey-100 min-h-[35px] px-1!'> <FaEye /> View</Button>,
+  },
+
+
+]
+
+export const menteesColData: Column<Mentor & { action?: ReactNode }>[] = [
+  {
+    title: "MENTOR",
+    key: "name",
+    render: (_, record) => (
+      <AvatarCard
+        image={record?.image}
+        label={`${record?.name}`}
+      />
+    ),
+  },
+  {
+    title: "EMAIL",
+    key: "email",
+    render: (_, record) => (
+      <>
+        {record.email}
+
+      </>
+    ),
+  },
+  {
+    title: "CONSULTATIONS",
+    key: "totalConsultation",
+    render: (_, record) => (
+      <>
+        {record.totalConsultation}
+
+      </>
+    ),
+  },
+  {
+    title: "TEMPLATES BOUGHT",
+    key: "totalTemplatesSold",
+    render: (_, record) => (
+      <>
+        {record.totalTemplatesSold}
+
+      </>
+    ),
+  },
+
+  {
+    title: "ACTION",
+    key: "action",
+    render: (_, record) => <Button link href={`mentees/view/${record?.id}?menteeName=${encodeURIComponent(record?.name)}`} className='outline-btn bg-grey-100 min-h-[35px] px-1!'> <FaEye /> View</Button>,
   },
 
 

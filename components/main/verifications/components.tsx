@@ -276,3 +276,59 @@ export const MentorAction = ({
         </>
     );
 };
+
+export const MenteeAction = ({
+    data,
+}: {
+    data: Mentor;
+}) => {
+    const { isOpen, openModal } = useModalContext();
+    return (
+        <>
+
+            <div className="space-y-3">
+                <Button
+                    className="alt-btn w-full"
+                    onClick={() => openModal(`suspend-${data?.id}`)}>
+                    Suspend Mentee
+                </Button>
+                <Button
+                    className="outline-btn border-error! text-error! w-full"
+                    onClick={() => openModal(`delete-${data?.id}`)}>
+                    Delete Mentee
+                </Button>
+            </div>
+
+
+            {isOpen[`suspend-${data?.id}`] && (
+                <ActionModals
+                    icon={<WarningIcon />}
+                    id={`suspend-${data?.id}`}
+                    title="Suspend Mentee"
+                    subTitle="Are you sure you want to suspend this mentee?"
+                    subtitleClass="text-grey-300!"
+                    actionTitle="Yes, Suspend"
+                    closeTitle="No, Cancel"
+                    btnSecClass="outline-btn"
+                    action={() => { }}
+                />
+            )}
+
+            {isOpen[`delete-${data?.id}`] && (
+                <ActionModals
+                    icon={<WarningIcon />}
+                    id={`delete-${data?.id}`}
+                    title="Delete Mentee"
+                    subTitle="Are you sure you want to delete this mentee?"
+                    subtitleClass="text-grey-300!"
+                    actionTitle="Yes, Delete"
+                    closeTitle="No, Cancel"
+                    btnSecClass="outline-btn"
+                    action={() => { }}
+                />
+            )}
+
+
+        </>
+    );
+};

@@ -1,3 +1,9 @@
+
+export type DynamicPageProps = {
+  params: Promise<{ id: string; slug: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
 export type AllAssets = Mentor | Template | Review
 
 
