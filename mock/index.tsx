@@ -1,3 +1,4 @@
+import { TransactionAction } from "@/components/main/payouts/transactionTable";
 import { MentorReqAction } from "@/components/main/verifications/components";
 import Button from "@/components/ui/button";
 import { StarRatings } from "@/components/ui/starRatings";
@@ -672,7 +673,6 @@ export const newBookingColData: Column<BookingType>[] = [
 
 ];
 
-
 export const recentBookingColData: Column<BookingType>[] = [
   {
     title: "MENTOR",
@@ -701,7 +701,6 @@ export const recentBookingColData: Column<BookingType>[] = [
     key: "sessions",
     render: (_, record) => <>{record?.sessions} </>,
   },
-
 
 ]
 
@@ -949,7 +948,7 @@ export const transactionAssets: TransactionType[] = [
   },
 ];
 
-export const transactionolData: Column<TransactionType>[] = [
+export const transactionolData: Column<TransactionType & { action?: ReactNode }>[] = [
   {
     title: "AMOUNT",
     key: "amount",
@@ -984,6 +983,11 @@ export const transactionolData: Column<TransactionType>[] = [
     render: (_, record) => <OrderStatus status={record?.status} />,
   },
 
+  {
+    title: "ACTION",
+    key: "action",
+    render: (_, record) => <TransactionAction data={record} />
+  },
 ];
 
 export const walletFilterData = [
