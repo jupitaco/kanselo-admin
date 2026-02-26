@@ -1,3 +1,4 @@
+import { usePaginationContext } from "@/context/paginateContext";
 import { BiSearch } from "react-icons/bi";
 
 function Search({
@@ -7,6 +8,7 @@ function Search({
   placeholder: string;
   className?: string;
 }) {
+  const { searchValue, debouncedSearch } = usePaginationContext();
   return (
     <article
       className={`flex flex-1 items-center gap-2 ${className} border-Line rounded-xl border px-4`}
@@ -15,8 +17,8 @@ function Search({
         type="search"
         placeholder={placeholder}
         className="flex-1 bg-transparent! px-4 py-3 focus:outline-none"
-        // defaultValue={searchValue}
-        // onChange={(e) => debouncedSearch(e.target.value)}
+        defaultValue={searchValue}
+        onChange={(e) => debouncedSearch(e.target.value)}
       />
       <BiSearch className="text-grey-500" />
     </article>

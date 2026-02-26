@@ -8,14 +8,13 @@ import {
   OrderStatus,
 } from "@/components/ui/tableComponent/tabelComps";
 import { Column } from "@/components/ui/tableComponent/tableComponent";
-import { AdminType } from "@/types/admin";
-import { BookingType, OfficeDay, } from "@/types/booking";
+import { UserData } from "@/types/auths";
+import { BookingType, OfficeDay } from "@/types/booking";
 import { Mentor, Review, Template, BookingTime } from "@/types/global";
 import { TransactionType } from "@/types/payout";
-import { formatNumInThousands } from "@/utils/helper";
+import { formatDate, formatNumInThousands } from "@/utils/helper";
 import { ReactNode } from "react";
 import { FaEye } from "react-icons/fa6";
-
 
 export const filterData = [
   {
@@ -91,7 +90,7 @@ export const mentorsData: Mentor[] = [
     totalTemplatesSold: 5,
     category: "Business Strategy & Marketing",
     phoneNumber: "+234 816 624 9033",
-    email: "richardherderson@gmail.com"
+    email: "richardherderson@gmail.com",
   },
   {
     id: "112",
@@ -111,7 +110,7 @@ export const mentorsData: Mentor[] = [
     totalTemplatesSold: 5,
     category: "Business Strategy & Marketing",
     phoneNumber: "+234 816 624 9033",
-    email: "richardherderson@gmail.com"
+    email: "richardherderson@gmail.com",
   },
   {
     id: "123",
@@ -131,7 +130,7 @@ export const mentorsData: Mentor[] = [
     totalTemplatesSold: 5,
     category: "Business Strategy & Marketing",
     phoneNumber: "+234 816 624 9033",
-    email: "richardherderson@gmail.com"
+    email: "richardherderson@gmail.com",
   },
   {
     id: "1",
@@ -151,7 +150,7 @@ export const mentorsData: Mentor[] = [
     totalTemplatesSold: 5,
     category: "Business Strategy & Marketing",
     phoneNumber: "+234 816 624 9033",
-    email: "richardherderson@gmail.com"
+    email: "richardherderson@gmail.com",
   },
   {
     id: "2",
@@ -171,7 +170,7 @@ export const mentorsData: Mentor[] = [
     totalTemplatesSold: 5,
     email: "richardherderson@gmail.com",
     category: "Mental Health",
-    phoneNumber: "+234 816 624 9033"
+    phoneNumber: "+234 816 624 9033",
   },
   {
     id: "3",
@@ -191,7 +190,7 @@ export const mentorsData: Mentor[] = [
     totalTemplatesSold: 5,
     email: "richardherderson@gmail.com",
     category: "Business Strategy & Marketing",
-    phoneNumber: "+234 816 624 9033"
+    phoneNumber: "+234 816 624 9033",
   },
   // {
   //   id: "4",
@@ -313,22 +312,22 @@ export const reviewColData: Column<Review>[] = [
     key: "rating",
     render: (_, record) => <StarRatings rating={record?.rating} />,
   },
-
 ];
-
-
 export const sessionData = [
   {
+    duration: 30,
     label: "1 (30 minutes - $10)",
-    value: 30,
+    value: 1,
   },
   {
+    duration: 60,
     label: "2 (60 minutes - $20)",
-    value: 60,
+    value: 2,
   },
   {
+    duration: 90,
     label: "3 (90 minutes - $30)",
-    value: 90,
+    value: 3,
   },
 ];
 
@@ -340,7 +339,7 @@ export const templateData: Template[] = [
     size: "12 MB",
     price: 20,
     createdAt: "03 Jan 2023",
-    totalSales: "25"
+    totalSales: "25",
   },
   {
     id: "2",
@@ -349,7 +348,7 @@ export const templateData: Template[] = [
     size: "5MB",
     price: 20,
     createdAt: "03 Jan 2023",
-    totalSales: "25"
+    totalSales: "25",
   },
   {
     id: "3",
@@ -358,7 +357,7 @@ export const templateData: Template[] = [
     size: "3MB",
     price: 20,
     createdAt: "03 Jan 2023",
-    totalSales: "25"
+    totalSales: "25",
   },
 ];
 
@@ -388,7 +387,6 @@ export const templateColData: Column<Template & { action?: ReactNode }>[] = [
 
     render: (_, record) => <>{record?.totalSales}</>,
   },
-
 ];
 
 export const bookingTimeData: BookingTime[] = [
@@ -445,7 +443,7 @@ export const bookingTimeData: BookingTime[] = [
   },
 ];
 
-export const bookingAssets: BookingType[] = [
+export const bookingAssets = [
   {
     id: "1",
     mentor: {
@@ -629,215 +627,195 @@ export const bookingAssets: BookingType[] = [
 export const newBookingColData: Column<BookingType>[] = [
   {
     title: "MENTEE",
-    key: "mentee",
+    key: "userId",
     render: (_, record) => (
       <AvatarCard
-        image={record?.mentee?.avatar}
-        label={`${record?.mentee?.name}`}
-        subtext={`${record?.location?.city} ${record?.location?.country}`}
+        image={record?.userId?.profilePhoto}
+        label={`${record?.userId?.fullName}`}
       />
     ),
   },
   {
     title: "MENTOR",
-    key: "mentor",
+    key: "mentorId",
     render: (_, record) => (
       <AvatarCard
-        image={record?.mentor?.avatar}
-        label={`${record?.mentor?.name}`}
-        subtext={`${record?.location?.city} ${record?.location?.country}`}
+        image={record?.mentorId?.profilePhoto}
+        label={`${record?.mentorId?.fullName}`}
       />
     ),
   },
   {
     title: "DATE & TIME",
-    key: "date",
+    key: "selectedDate",
+    cellClassName: "text-grey-300",
     render: (_, record) => (
       <>
-        {record.date} <br />
-        {record.time}
+        {formatDate(new Date(record.selectedDate))} <br />
+        {record.selectedTime} - {record.selectedEndTime}
       </>
     ),
   },
 
   {
     title: "SESSION",
-    key: "sessions",
-    render: (_, record) => <>{record?.sessions} </>,
+    key: "session",
+    render: (_, record) => (
+      <>
+        {sessionData?.find((s) => s.value === record?.session)?.duration}{" "}
+        Minutes{" "}
+      </>
+    ),
   },
 
   {
     title: "MESSAGE",
-    key: "review",
+    key: "message",
     cellClassName: "min-w-40 max-w-40",
-    render: (_, record) => <>{record?.review}</>,
+    render: (_, record) => <>{record?.message}</>,
   },
-
 ];
 
 export const recentBookingColData: Column<BookingType>[] = [
   {
     title: "MENTOR",
-    key: "mentor",
+    key: "userId",
     render: (_, record) => (
       <AvatarCard
-        image={record?.mentor?.avatar}
-        label={`${record?.mentor?.name}`}
-        subtext={`${record?.location?.city} ${record?.location?.country}`}
+        image={record?.userId?.profilePhoto}
+        label={`${record?.userId?.fullName}`}
+        subtext={`${record?.userId?.city} ${record?.userId?.country}`}
       />
     ),
   },
   {
     title: "DATE & TIME",
-    key: "date",
+    key: "selectedDate",
     render: (_, record) => (
       <>
-        {record.date} <br />
-        {record.time}
+        {formatDate(new Date(record.selectedDate))} <br />
+        {record.selectedTime} - {record.selectedEndTime}
       </>
     ),
   },
 
   {
     title: "SESSION",
-    key: "sessions",
-    render: (_, record) => <>{record?.sessions} </>,
-  },
-
-]
-
-export const recentMentorsColData: Column<Mentor & { action?: ReactNode }>[] = [
-  {
-    title: "MENTOR",
-    key: "name",
-    render: (_, record) => (
-      <AvatarCard
-        image={record?.image}
-        label={`${record?.name}`}
-      />
-    ),
-  },
-  {
-    title: "LOCATION",
-    key: "location",
+    key: "session",
     render: (_, record) => (
       <>
-        {record.location}
-
+        {sessionData?.find((s) => s.value === record?.session)?.duration}{" "}
+        Minutes{" "}
       </>
     ),
   },
+];
 
-  {
-    title: "ACTION",
-    key: "action",
-    render: (_, record) => <MentorReqAction data={record} recent />,
-  },
+export const recentMentorsColData: Column<UserData & { action?: ReactNode }>[] =
+  [
+    {
+      title: "MENTOR",
+      key: "fullName",
+      render: (_, record) => (
+        <AvatarCard
+          image={record?.profilePhoto}
+          label={`${record?.fullName}`}
+        />
+      ),
+    },
+    {
+      title: "LOCATION",
+      key: "country",
+      render: (_, record) => (
+        <>{`${record?.city} ${record?.state}, ${record?.country}`}</>
+      ),
+    },
 
+    {
+      title: "ACTION",
+      key: "action",
+      render: (_, record) => <MentorReqAction data={record} recent />,
+    },
+  ];
 
-]
-
-export const mentorsColData: Column<Mentor & { action?: ReactNode }>[] = [
+export const mentorsColData: Column<UserData & { action?: ReactNode }>[] = [
   {
     title: "MENTOR",
-    key: "name",
+    key: "fullName",
     render: (_, record) => (
-      <AvatarCard
-        image={record?.image}
-        label={`${record?.name}`}
-      />
+      <AvatarCard image={record?.profilePhoto} label={`${record?.fullName}`} />
     ),
   },
   {
     title: "EMAIL",
     key: "email",
-    render: (_, record) => (
-      <>
-        {record.email}
-
-      </>
-    ),
+    render: (_, record) => <>{record.email}</>,
   },
   {
     title: "CONSULTATIONS",
-    key: "totalConsultation",
-    render: (_, record) => (
-      <>
-        {record.totalConsultation}
-
-      </>
-    ),
+    key: "totalBookings",
+    render: (_, record) => <>{record.totalBookings}</>,
   },
   {
     title: "TEMPLATES SOLD",
     key: "totalTemplatesSold",
-    render: (_, record) => (
-      <>
-        {record.totalTemplatesSold}
-
-      </>
-    ),
+    render: (_, record) => <>{record.totalTemplatesSold}</>,
   },
 
   {
     title: "ACTION",
     key: "action",
-    render: (_, record) => <Button link href={`mentors/view/${record?.id}?mentorName=${encodeURIComponent(record?.name)}`} className='outline-btn bg-grey-100 min-h-[35px]'> <FaEye /> View</Button>,
+    render: (_, record) => (
+      <Button
+        link
+        href={`mentors/view/${record?._id}?mentorName=${encodeURIComponent(record?.fullName)}`}
+        className="outline-btn bg-grey-100 min-h-[35px]"
+      >
+        {" "}
+        <FaEye /> View
+      </Button>
+    ),
   },
+];
 
-
-]
-
-export const menteesColData: Column<Mentor & { action?: ReactNode }>[] = [
+export const menteesColData: Column<UserData & { action?: ReactNode }>[] = [
   {
     title: "MENTOR",
-    key: "name",
+    key: "fullName",
     render: (_, record) => (
-      <AvatarCard
-        image={record?.image}
-        label={`${record?.name}`}
-      />
+      <AvatarCard image={record?.profilePhoto} label={`${record?.fullName}`} />
     ),
   },
   {
     title: "EMAIL",
     key: "email",
-    render: (_, record) => (
-      <>
-        {record.email}
-
-      </>
-    ),
+    render: (_, record) => <>{record.email}</>,
   },
   {
     title: "CONSULTATIONS",
-    key: "totalConsultation",
-    render: (_, record) => (
-      <>
-        {record.totalConsultation}
-
-      </>
-    ),
+    key: "totalBookings",
+    render: (_, record) => <>{record.totalBookings}</>,
   },
   {
     title: "TEMPLATES BOUGHT",
     key: "totalTemplatesSold",
-    render: (_, record) => (
-      <>
-        {record.totalTemplatesSold}
-
-      </>
-    ),
+    render: (_, record) => <>{record.totalTemplatesSold}</>,
   },
 
   {
     title: "ACTION",
     key: "action",
-    render: (_, record) => <Button link href={`mentees/view/${record?.id}?menteeName=${encodeURIComponent(record?.name)}`} className='outline-btn bg-grey-100 min-h-[35px]'> <FaEye /> View</Button>,
+    render: (_, record) => (
+      <Button
+        link
+        href={`mentees/view/${record?._id}?menteeName=${encodeURIComponent(record?.fullName)}`}
+        className="outline-btn bg-grey-100 min-h-[35px]"
+      >
+        <FaEye /> View
+      </Button>
+    ),
   },
-
-
-]
+];
 
 export const callRatings = [
   {
@@ -950,29 +928,28 @@ export const transactionAssets: TransactionType[] = [
   },
 ];
 
-export const transactionolData: Column<TransactionType & { action?: ReactNode }>[] = [
+export const transactionolData: Column<
+  TransactionType & { action?: ReactNode }
+>[] = [
   {
     title: "AMOUNT",
     key: "amount",
-    render: (_, record) => <>{record?.type === "withdrawl" ? "-" : "+"}${formatNumInThousands(record?.amount)}</>,
+    render: (_, record) => (
+      <>
+        {record?.type === "withdrawl" ? "-" : "+"}$
+        {formatNumInThousands(record?.amount)}
+      </>
+    ),
   },
   {
     title: "DATE",
     key: "date",
-    render: (_, record) => (
-      <>
-        {record.date}
-      </>
-    ),
+    render: (_, record) => <>{record.date}</>,
   },
   {
     title: "TIME",
     key: "time",
-    render: (_, record) => (
-      <>
-        {record.time}
-      </>
-    ),
+    render: (_, record) => <>{record.time}</>,
   },
   {
     title: "TYPE",
@@ -988,7 +965,7 @@ export const transactionolData: Column<TransactionType & { action?: ReactNode }>
   {
     title: "ACTION",
     key: "action",
-    render: (_, record) => <TransactionAction data={record} />
+    render: (_, record) => <TransactionAction data={record} />,
   },
 ];
 
@@ -997,60 +974,75 @@ export const walletFilterData = [
   { label: "Last 30 days", value: "last30days" },
 ];
 
-
-
 export const WeeklyHours = [
   {
     day: "Sunday",
-    time: []
+    time: [],
   },
   {
     day: "Monday",
-    time: ["09:00 - 12:00", "13:00 - 17:00"]
+    time: ["09:00 - 12:00", "13:00 - 17:00"],
   },
   {
     day: "Tuesday",
-    time: ["09:00 - 12:00", "13:00 - 17:00"]
+    time: ["09:00 - 12:00", "13:00 - 17:00"],
   },
   {
     day: "Wednesday",
-    time: ["09:00 - 12:00", "13:00 - 17:00"]
+    time: ["09:00 - 12:00", "13:00 - 17:00"],
   },
   {
     day: "Thursday",
-    time: ["09:00 - 12:00", "13:00 - 17:00"]
+    time: ["09:00 - 12:00", "13:00 - 17:00"],
   },
   {
     day: "Friday",
-    time: ["09:00 - 12:00", "13:00 - 17:00"]
+    time: ["09:00 - 12:00", "13:00 - 17:00"],
   },
   {
     day: "Saturday",
-    time: []
+    time: [],
   },
-]
+];
 
 export const officeHours: OfficeDay[] = [
   {
-    title: "Sunday", checked: false, time: []
+    title: "Sunday",
+    checked: false,
+    time: [],
   },
   {
-    title: "Monday", checked: true, time: [{ startTime: "09:00", endTime: "12:00" }, { startTime: "09:00", endTime: "12:00" }]
+    title: "Monday",
+    checked: true,
+    time: [
+      { startTime: "09:00", endTime: "12:00" },
+      { startTime: "09:00", endTime: "12:00" },
+    ],
   },
   {
-    title: "Tuesday", checked: true, time: [{ startTime: "09:00", endTime: "12:00" }]
+    title: "Tuesday",
+    checked: true,
+    time: [{ startTime: "09:00", endTime: "12:00" }],
   },
   {
-    title: "Wednesday", checked: true, time: [{ startTime: "09:00", endTime: "12:00" }]
+    title: "Wednesday",
+    checked: true,
+    time: [{ startTime: "09:00", endTime: "12:00" }],
   },
   {
-    title: "Thursday", checked: true, time: [{ startTime: "09:00", endTime: "12:00" }]
+    title: "Thursday",
+    checked: true,
+    time: [{ startTime: "09:00", endTime: "12:00" }],
   },
   {
-    title: "Friday", checked: true, time: [{ startTime: "09:00", endTime: "12:00" }]
+    title: "Friday",
+    checked: true,
+    time: [{ startTime: "09:00", endTime: "12:00" }],
   },
   {
-    title: "Saturday", checked: false, time: []
+    title: "Saturday",
+    checked: false,
+    time: [],
   },
 ];
 
@@ -1066,7 +1058,6 @@ export const topMentors = [
     image: "/images/mentor2.png",
   },
   {
-
     name: "Floyd Miles",
     totalCalls: 490,
     image: "/images/mentor3.png",
@@ -1078,71 +1069,61 @@ export const topMentors = [
   },
 ];
 
-
-export const adminAssets: AdminType[] = [
+export const adminAssets = [
   {
-    id: '1',
+    id: "1",
     name: "Anna Mulana",
     email: "annamulan@gmail.com",
-    role: "Super Admin"
+    role: "Super Admin",
   },
   {
     id: "2",
     name: "Shuri Bashuri",
     email: "annamulan@gmail.com",
-    role: "Admin"
+    role: "Admin",
   },
   {
-    id: '3',
+    id: "3",
     name: "Gwen Stacy",
     email: "annamulan@gmail.com",
-    role: "Admin"
+    role: "Admin",
   },
   {
     id: "4",
     name: "John Kenedy",
     email: "annamulan@gmail.com",
-    role: "Admin"
+    role: "Admin",
   },
   {
     id: "5",
     name: "Anna Mulana",
     email: "annamulan@gmail.com",
-    role: "Admin"
+    role: "Admin",
   },
-
 ];
 
-
-export const admincolData: Column<AdminType & { action?: ReactNode }>[] = [
+export const admincolData: Column<UserData & { action?: ReactNode }>[] = [
   {
     title: "NAME",
-    key: "name",
-    render: (_, record) => <>{record?.name}</>,
+    key: "fullName",
+    render: (_, record) => <>{record?.fullName}</>,
   },
   {
     title: "EMAIL",
     key: "email",
-    render: (_, record) => (
-      <>
-        {record.email}
-      </>
-    ),
+    render: (_, record) => <>{record.email}</>,
   },
   {
     title: "ROLE",
     key: "role",
     render: (_, record) => (
-      <>
-        {record.role}
-      </>
+      <>{record?.isSuperAdmin ? "SUPERADMIN" : record.role}</>
     ),
   },
-
 
   {
     title: "ACTION",
     key: "action",
-    render: (_, record) => <AdminAction data={record} />
+    render: (_, record) => <AdminAction data={record} />,
   },
 ];

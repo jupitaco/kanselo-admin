@@ -1,21 +1,21 @@
 "use client";
 
 import { ApexChart } from "@/components/charts/apexChart";
-import numeral from 'numeral'
-import React from "react";
+import Field from "@/components/ui/field";
+import { RevenueGraphType } from "@/types/booking";
+import { formatDate, formatNumInThousands } from "@/utils/helper";
+import numeral from "numeral";
+import React, { useMemo } from "react";
 
-export default function RevenueChart(
-  //   {
-  //   chartData,
-  // }: {
-  //   chartData?: {
-  //     data: number[];
-  //     name: string;
-  //   }[];
-  // }
-) {
-
-  const ctg = ['Jan', "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"]
+export default function RevenueChart({
+  chartData,
+}: {
+  chartData?: RevenueGraphType[];
+}) {
+  const ctg = chartData?.map(
+    (item) => formatDate(new Date(item?.date)),
+    "short",
+  );
 
   const chartOptions = {
     chart: {
@@ -26,7 +26,7 @@ export default function RevenueChart(
       selection: { enabled: false },
     },
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     colors: ["#0C2A46", "#F08E10"],
     fill: {
@@ -43,27 +43,21 @@ export default function RevenueChart(
       categories: ctg,
       // labels: { show: false }
     },
-    yaxis: {
 
+    yaxis: {
       labels: {
         formatter: (e: number) => {
-          const formatNumInThousand = (
-            value: string,
-          ) => {
+          const formatNumInThousand = (value: string) => {
             return numeral(value).format("0a");
-
           };
 
-          return formatNumInThousand(e?.toString())
+          return formatNumInThousand(e?.toString());
         },
       },
-
-
     },
 
     stroke: {
       curve: "smooth",
-
     },
     markers: {
       size: 4,
@@ -79,19 +73,60 @@ export default function RevenueChart(
   };
 
   const valueChartData = [
-    { name: "Consultation", data: [100000, 200000, 300000, 450000, 500000, 700000, 110000, 300000, 320000, 900000, 600000, 390000] },
-    { name: "Template", data: [20000, 900000, 100000, 250000, 300000, 600000, 310000, 100000, 620000, 500000, 400000, 90000] },
-  ]
-
-
+    {
+      name: "Consultation",
+      data: chartData?.map((item) => item?.bookingRevenue),
+    },
+    {
+      name: "Template",
+      data: chartData?.map((item) => item?.templateRevenue),
+    },
+  ];
 
   return (
-    <section className="w-full overflow-hidden bg-white rounded-2xl p-5">
-      <ApexChart
-        options={chartOptions}
-        data={valueChartData}
-        type="area"
-      />
+    <section className="w-full overflow-x-auto rounded-2xl bg-white p-5">
+      <ApexChart options={chartOptions} data={valueChartData} type="area" />
     </section>
   );
 }
+
+export const RevenueStats = ({
+  chartData,
+}: {
+  chartData?: RevenueGraphType[];
+}) => {
+  const totalConsultation = useMemo(
+    () =>
+      chartData?.reduce(
+        (accumulator, currentValue) =>
+          accumulator + (currentValue?.bookingRevenue || 0),
+        0,
+      ) ?? 0,
+    [chartData],
+  );
+  const totalTemplates = useMemo(
+    () =>
+      chartData?.reduce(
+        (accumulator, currentValue) =>
+          accumulator + (currentValue?.templateRevenue || 0),
+        0,
+      ) ?? 0,
+    [chartData],
+  );
+
+  return (
+    <div className="space-y-6">
+      <h2>Revenue</h2>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Field
+          label="Consultations"
+          value={`$${formatNumInThousands(totalConsultation)}`}
+        />
+        <Field
+          label="Templates"
+          value={`$${formatNumInThousands(totalTemplates)}`}
+        />
+      </div>
+    </div>
+  );
+};

@@ -57,8 +57,8 @@ export const CallIcon = (props: SVGProps<SVGSVGElement>) => (
 
 export const NotFound = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={180}
-    height={180}
+    // width={180}
+    // height={180}
     viewBox="0 0 180 180"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -562,7 +562,7 @@ export const UserIcon = (props: SVGProps<SVGSVGElement>) => (
       fill="#4D67EB"
     />
   </svg>
-)
+);
 
 export const ConsultationIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -595,7 +595,7 @@ export const ConsultationIcon = (props: SVGProps<SVGSVGElement>) => (
       fill="#292D32"
     />
   </svg>
-)
+);
 
 export const TemplatesIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -616,7 +616,7 @@ export const TemplatesIcon = (props: SVGProps<SVGSVGElement>) => (
       fill="#24921E"
     />
   </svg>
-)
+);
 
 export const IncomeIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -661,7 +661,7 @@ export const IncomeIcon = (props: SVGProps<SVGSVGElement>) => (
       fill="#F08E10"
     />
   </svg>
-)
+);
 
 export const TemplateIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -678,7 +678,7 @@ export const TemplateIcon = (props: SVGProps<SVGSVGElement>) => (
       stroke="fill"
     />
   </svg>
-)
+);
 
 export const MentorIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -700,7 +700,7 @@ export const MentorIcon = (props: SVGProps<SVGSVGElement>) => (
       stroke="#757575"
     />
   </svg>
-)
+);
 
 export const MenteeIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -732,4 +732,4 @@ export const MenteeIcon = (props: SVGProps<SVGSVGElement>) => (
       stroke="fill"
     />
   </svg>
-)
+);

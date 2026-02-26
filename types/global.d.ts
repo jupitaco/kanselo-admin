@@ -1,11 +1,14 @@
+export type ActionFormStatus = {
+  error: boolean;
+  message: string;
+};
 
 export type DynamicPageProps = {
-  params: Promise<{ id: string; slug: string }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}
+  params: Promise<{ id: string; slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export type AllAssets = Mentor | Template | Review
-
+export type AllAssets = Mentor | Template | Review;
 
 export type Mentor = {
   id: string;
@@ -24,8 +27,8 @@ export type Mentor = {
   totalConsultation: number;
   totalTemplatesSold: number;
   sessionRate: number;
-  email: string
-  phoneNumber: string
+  email: string;
+  phoneNumber: string;
 };
 
 export type Review = {
@@ -44,11 +47,28 @@ export type Template = {
   size: string;
   price: number;
   createdAt: string;
-  totalSales: string
+  totalSales: string;
 };
 
 export type BookingTime = {
   id: string;
   time: string;
   value: string;
+};
+
+export type SearchPageParams = {
+  tab: string;
+  page: string;
+  search: string;
+  status: string;
+  mentorName: string;
+  industry: string;
+  selectedDate: string;
+  startDate: string;
+  endDate: string;
+  redirect: string;
+};
+
+export type SearchParams = {
+  searchParams: Promise<SearchPageParams>;
 };

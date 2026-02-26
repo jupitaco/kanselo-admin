@@ -1,11 +1,13 @@
 import { useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { UserData } from "@/types/auths";
+import { debouncer } from "@/utils/helper";
 
 export type UsePaginateData = {
   total: number;
   limit: number;
   page: number;
-  assets: [];
+  assets: UserData[];
 };
 
 export default function usePagination(data?: UsePaginateData) {
@@ -14,6 +16,7 @@ export default function usePagination(data?: UsePaginateData) {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const [isPending, startTransition] = useTransition();
+  const searchValue = searchParams.get("search")?.toString();
 
   const currentPage = Number(searchParams.get("page") || "1");
   const totalPages = Math.ceil(Number(data?.total) / Number(data?.limit));
@@ -54,8 +57,6 @@ export default function usePagination(data?: UsePaginateData) {
   const handleSearchUrl = (query: string) => {
     const currentSearch = searchParams.get("search") || "";
 
-    console.log("curr>>", currentSearch);
-    console.log("q>>", query);
     if (query !== currentSearch) {
       // Only update if the query has changed
       const pageUrl = createSearchURL(query);
@@ -101,6 +102,8 @@ export default function usePagination(data?: UsePaginateData) {
     }
   };
 
+  const debouncedSearch = debouncer(handleSearchUrl, 350);
+
   const previousBtnState = currentPage === 1;
   const nextBtnState = currentPage === totalPages;
 
@@ -119,5 +122,7 @@ export default function usePagination(data?: UsePaginateData) {
     handlePageUrl,
     handleSearchUrl,
     data,
+    searchValue,
+    debouncedSearch,
   };
 }

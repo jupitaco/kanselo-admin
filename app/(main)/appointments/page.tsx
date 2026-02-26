@@ -22,7 +22,7 @@ export default function Pages({
 
   return (
     <main className="space-y-14 p-5">
-      <header className="grid grid-cols-1 lg:grid-cols-3 items-center justify-between gap-4">
+      <header className="grid grid-cols-1 items-center justify-between gap-4 lg:grid-cols-3">
         <article className="space-y-2 capitalize">
           <h4>{activeTab === "all" ? "New" : activeTab} appointments</h4>
         </article>
@@ -32,7 +32,7 @@ export default function Pages({
             <li key={idx}>
               <Link
                 href={`/appointments?tab=${path}`}
-                className={`text-xs font-medium ${activeTab === path ? "bg-primary rounded-lg text-white" : ""} px-4 md:px-7 py-2`}
+                className={`text-xs font-medium ${activeTab === path ? "bg-primary rounded-lg text-white" : ""} px-4 py-2 md:px-7`}
               >
                 {label}
               </Link>

@@ -5,13 +5,17 @@ import Hambugger from "./hambugger";
 import "./navbar.css";
 import { usePathname, useSearchParams } from "next/navigation";
 import { RenderNotifs } from "./notifications/notifications";
+import { useAuthContext } from "@/context/authContext";
+import { UserData } from "@/types/auths";
 
-const TopBar = () => {
+const TopBar = ({ user }: { user: UserData }) => {
+  const { setCurrentUserData } = useAuthContext();
   const searchParams = useSearchParams();
   // const rsp = await getCurrentUserApi();
   // const userData = rsp?.ok ? rsp?.body?.user : null;
 
-  const mentorName = searchParams.get("mentorName") || searchParams.get("menteeName");
+  const mentorName =
+    searchParams.get("mentorName") || searchParams.get("menteeName");
 
   const userData = {
     firstName: "Richard ",
