@@ -7,12 +7,11 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { RenderNotifs } from "./notifications/notifications";
 import { useAuthContext } from "@/context/authContext";
 import { UserData } from "@/types/auths";
+import { useEffect } from "react";
 
 const TopBar = ({ user }: { user: UserData }) => {
   const { setCurrentUserData } = useAuthContext();
   const searchParams = useSearchParams();
-  // const rsp = await getCurrentUserApi();
-  // const userData = rsp?.ok ? rsp?.body?.user : null;
 
   const mentorName =
     searchParams.get("mentorName") || searchParams.get("menteeName");
@@ -33,6 +32,11 @@ const TopBar = ({ user }: { user: UserData }) => {
 
   const title = cleanedPath + `${mentorName ? ` - ${mentorName}` : ""}`;
 
+  useEffect(() => {
+    if (!user) return;
+    setCurrentUserData(user);
+  }, [user]);
+
   return (
     <>
       <header className="border-grey-100 sticky top-0 left-0 hidden min-h-(--main-header-height) items-center justify-center border-b bg-white lg:flex">
@@ -46,7 +50,7 @@ const TopBar = ({ user }: { user: UserData }) => {
             <div className="flex items-center justify-end gap-2 rounded-full! px-3 py-2">
               <figure className="relative size-12 overflow-hidden rounded-xl">
                 <Image
-                  src={allImages.avatar}
+                  src={user?.profilePhoto ?? allImages.noAvatar}
                   alt="profile"
                   className="h-full w-full object-cover"
                   fill
@@ -54,10 +58,8 @@ const TopBar = ({ user }: { user: UserData }) => {
                 />
               </figure>
               <div className="flex-1">
-                <h5 className="text-sm font-medium">
-                  {userData?.firstName} {userData?.lastName}
-                </h5>
-                <small className="text-grey-400">{userData?.email}</small>
+                <h5 className="text-sm font-medium">{user?.fullName}</h5>
+                <small className="text-grey-400">{user?.email}</small>
               </div>
             </div>
           </article>

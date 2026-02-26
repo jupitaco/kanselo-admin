@@ -94,9 +94,7 @@ export const updateUserAction = async (_: ActionFormStatus, body: FormData) => {
   const rawData = {
     fullName: body.get("fullName"),
     profilePhoto: body.get("profilePhoto"),
-    country: body.get("country"),
-    state: body.get("state"),
-    city: body.get("city"),
+    // phoneNumber: body.get("phoneNumber"),
   };
 
   try {
