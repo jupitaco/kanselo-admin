@@ -1,51 +1,25 @@
 import RenderBookingByStatus from "@/components/main/booking/renderBookingByStatus";
-import Search from "@/components/ui/search";
+import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
+import { SearchParams } from "@/types/global";
 import { Metadata } from "next";
-import Link from "next/link";
-import React, { use } from "react";
+import React, { Suspense, use } from "react";
 
 export const metadata: Metadata = { title: "Appointments" };
 
-const tabData = [
-  { label: "New", path: "all" },
+export const tabData = [
+  { label: "New", path: "pending" },
   { label: "Completed", path: "completed" },
   { label: "Cancelled", path: "cancelled" },
 ];
 
-export default function Pages({
-  searchParams,
-}: {
-  searchParams: Promise<{ tab: string }>;
-}) {
-  const { tab } = use(searchParams);
-  const activeTab = tab || "all";
+export default function Pages({ searchParams }: SearchParams) {
+  const p = use(searchParams);
 
   return (
     <main className="space-y-14 p-5">
-      <header className="grid grid-cols-1 items-center justify-between gap-4 lg:grid-cols-3">
-        <article className="space-y-2 capitalize">
-          <h4>{activeTab === "all" ? "New" : activeTab} appointments</h4>
-        </article>
-
-        <ul className="card flex min-h-10 w-full items-center justify-between gap-1 p-1 lg:w-fit">
-          {tabData.map(({ label, path }, idx) => (
-            <li key={idx}>
-              <Link
-                href={`/appointments?tab=${path}`}
-                className={`text-xs font-medium ${activeTab === path ? "bg-primary rounded-lg text-white" : ""} px-4 py-2 md:px-7`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex justify-end">
-          <Search placeholder="Search" className="max-w-fit" />
-        </div>
-      </header>
-
-      <RenderBookingByStatus />
+      <Suspense fallback={<TableSkeleton />}>
+        <RenderBookingByStatus searchParams={p} />
+      </Suspense>
     </main>
   );
 }

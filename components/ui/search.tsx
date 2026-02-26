@@ -1,3 +1,5 @@
+"use client";
+
 import { usePaginationContext } from "@/context/paginateContext";
 import { BiSearch } from "react-icons/bi";
 

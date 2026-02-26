@@ -21,17 +21,8 @@ export const getAllBookingsApi = async ({
   limit?: string;
   status?: string;
 }) => {
-  const user = await getUser();
   return Api.get<BookingRsp>(
-    `/booking/mentor/${user?._id}?${queryBuilder({ page, limit, status: String(status) })}`,
-    true,
-  );
-};
-
-export const getRecentBookingsApi = async () => {
-  const user = await getUser();
-  return Api.get<BookingRsp>(
-    `/booking/mentor-dashboard/${user?._id}/recent-consultations?${queryBuilder({ page: "1", limit: "10" })}`,
+    `/booking/admin/all?${queryBuilder({ page, limit, status: String(status) })}`,
     true,
   );
 };

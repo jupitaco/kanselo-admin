@@ -1,6 +1,12 @@
 import { ApiResponse } from "@/types/auths";
 import { Api } from "./api";
-import { ApproveMentorType, DeclineMentorType } from "@/types/users";
+import {
+  ApproveMentorType,
+  DeclineMentorType,
+  MenteesRsp,
+  MentorsRsp,
+} from "@/types/users";
+import { queryBuilder } from "@/utils/helper";
 
 export const blockUserByIdApi = (userId: string) => {
   return Api.patch<
@@ -72,6 +78,36 @@ export const declineMentorApi = (mentorId: string, body: DeclineMentorType) => {
   return Api.patch<DeclineMentorType, ApiResponse>(
     `/user/admin/verification/${mentorId}/approval`,
     body,
+    true,
+  );
+};
+
+export const getAllMentees = ({
+  page = "1",
+  limit = "10",
+  search,
+}: {
+  page?: string;
+  limit?: string;
+  search?: string;
+}) => {
+  return Api.get<MenteesRsp>(
+    `/booking/admin/users/mentees?${queryBuilder({ page, limit, search: String(search) })}`,
+    true,
+  );
+};
+
+export const getAllMentors = ({
+  page = "1",
+  limit = "10",
+  search,
+}: {
+  page?: string;
+  limit?: string;
+  search?: string;
+}) => {
+  return Api.get<MentorsRsp>(
+    `/booking/admin/users/mentors?${queryBuilder({ page, limit, search: String(search) })}`,
     true,
   );
 };

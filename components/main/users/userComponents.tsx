@@ -18,6 +18,7 @@ import { EmptyState } from "@/components/ui/emptyState";
 import { UserData } from "@/types/auths";
 import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
 import TablePagination from "@/components/ui/tableComponent/tablePagination";
+import Search from "@/components/ui/search";
 
 export const RecentMentorApplicationTable = ({
   data,
@@ -52,6 +53,8 @@ export const MentorsTable = () => {
           data={data?.assets as UserData[]}
         />
       )}
+
+      <TablePagination />
     </>
   );
 };
@@ -103,6 +106,8 @@ export const MenteesTable = () => {
           data={data?.assets as UserData[]}
         />
       )}
+
+      <TablePagination />
     </>
   );
 };
@@ -127,5 +132,14 @@ export const AdminTable = () => {
 
       <TablePagination />
     </>
+  );
+};
+
+export const UserHeader = ({ pageTitle }: { pageTitle: string }) => {
+  return (
+    <header className="flex flex-wrap items-center justify-between gap-4">
+      <h4 className="font-semibold">All {pageTitle}</h4>
+      <Search placeholder="Search" className="max-w-fit!" />
+    </header>
   );
 };

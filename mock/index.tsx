@@ -8,6 +8,7 @@ import {
   OrderStatus,
 } from "@/components/ui/tableComponent/tabelComps";
 import { Column } from "@/components/ui/tableComponent/tableComponent";
+import { allImages } from "@/public/images/images";
 import { UserData } from "@/types/auths";
 import { BookingType, OfficeDay } from "@/types/booking";
 import { Mentor, Review, Template, BookingTime } from "@/types/global";
@@ -630,7 +631,7 @@ export const newBookingColData: Column<BookingType>[] = [
     key: "userId",
     render: (_, record) => (
       <AvatarCard
-        image={record?.userId?.profilePhoto}
+        image={record?.userId?.profilePhoto || allImages.noAvatar}
         label={`${record?.userId?.fullName}`}
       />
     ),
@@ -640,7 +641,7 @@ export const newBookingColData: Column<BookingType>[] = [
     key: "mentorId",
     render: (_, record) => (
       <AvatarCard
-        image={record?.mentorId?.profilePhoto}
+        image={record?.mentorId?.profilePhoto || allImages.noAvatar}
         label={`${record?.mentorId?.fullName}`}
       />
     ),
@@ -682,7 +683,7 @@ export const recentBookingColData: Column<BookingType>[] = [
     key: "userId",
     render: (_, record) => (
       <AvatarCard
-        image={record?.userId?.profilePhoto}
+        image={record?.userId?.profilePhoto || allImages.noAvatar}
         label={`${record?.userId?.fullName}`}
         subtext={`${record?.userId?.city} ${record?.userId?.country}`}
       />
@@ -718,7 +719,7 @@ export const recentMentorsColData: Column<UserData & { action?: ReactNode }>[] =
       key: "fullName",
       render: (_, record) => (
         <AvatarCard
-          image={record?.profilePhoto}
+          image={record?.profilePhoto || allImages.noAvatar}
           label={`${record?.fullName}`}
         />
       ),
@@ -743,7 +744,10 @@ export const mentorsColData: Column<UserData & { action?: ReactNode }>[] = [
     title: "MENTOR",
     key: "fullName",
     render: (_, record) => (
-      <AvatarCard image={record?.profilePhoto} label={`${record?.fullName}`} />
+      <AvatarCard
+        image={record?.profilePhoto || allImages.noAvatar}
+        label={`${record?.fullName}`}
+      />
     ),
   },
   {
@@ -783,7 +787,10 @@ export const menteesColData: Column<UserData & { action?: ReactNode }>[] = [
     title: "MENTOR",
     key: "fullName",
     render: (_, record) => (
-      <AvatarCard image={record?.profilePhoto} label={`${record?.fullName}`} />
+      <AvatarCard
+        image={record?.profilePhoto || allImages.noAvatar}
+        label={`${record?.fullName}`}
+      />
     ),
   },
   {

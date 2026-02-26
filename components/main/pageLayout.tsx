@@ -13,16 +13,12 @@ export default function PageLayout({
   children: ReactNode;
 }) {
   return (
-    <main>
+    <>
       <PaginationProvider data={data as UsePaginateData}>
-        <header>
-          {headerChildren}
-          <div className="flex justify-end">
-            <Search placeholder="Search" className="max-w-fit" />
-          </div>
-        </header>
+        {headerChildren}
+
         {children}
       </PaginationProvider>
-    </main>
+    </>
   );
 }
