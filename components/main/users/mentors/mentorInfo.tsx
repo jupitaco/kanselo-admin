@@ -3,8 +3,9 @@ import { formatNumInThousands } from "@/utils/helper";
 import { BsStarFill } from "react-icons/bs";
 import { ErrorUI } from "@/components/ui/emptyState";
 import { getMentorByIdApi } from "@/services/apis/bookings.api";
-import { MentorAvatar, UserAction } from "../../verifications/components";
+import { MentorAvatar } from "../../verifications/components";
 import Field from "@/components/ui/field";
+import { UserAction } from "../userComponents";
 
 export default async function MentorInfo({ mentorId }: { mentorId: string }) {
   const rsp = await getMentorByIdApi(mentorId);
@@ -82,7 +83,7 @@ export default async function MentorInfo({ mentorId }: { mentorId: string }) {
         </li>
       </ul>
 
-      <UserAction data={mentor} userType="Mentor" />
+      <UserAction data={mentor} userType="Mentor" path="/mentors" />
     </section>
   );
 }

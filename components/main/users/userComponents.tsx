@@ -5,10 +5,6 @@ import {
   mentorsColData,
   recentBookingColData,
   recentMentorsColData,
-  reviewColData,
-  reviewsData,
-  templateColData,
-  templateData,
 } from "@/mock";
 import React from "react";
 import TableComponent from "@/components/ui/tableComponent/tableComponent";
@@ -22,6 +18,16 @@ import Skeleton from "@/components/ui/skeleton/skeleton";
 import { BsStarFill } from "react-icons/bs";
 import Button from "@/components/ui/button";
 import { BookingType } from "@/types/booking";
+import { useModalContext } from "@/context/modalContext";
+import ActionModals from "@/components/ui/modals/actionModals";
+import { WarningIcon } from "@/components/logout/logout";
+import {
+  deleteUserAction,
+  toggleUserAccessAction,
+} from "@/libs/actions/users.actions";
+import { handleError, handleSuccess } from "@/utils/helper";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 export const RecentMentorApplicationTable = ({
   data,
@@ -59,26 +65,6 @@ export const MentorsTable = () => {
 
       <TablePagination />
     </>
-  );
-};
-
-export const MentorTemplateTable = () => {
-  return (
-    <TableComponent
-      title="Mentor Templates"
-      columns={templateColData}
-      data={templateData}
-    />
-  );
-};
-
-export const MentorReviewsTable = () => {
-  return (
-    <TableComponent
-      title="Mentor Reviews"
-      columns={reviewColData}
-      data={reviewsData}
-    />
   );
 };
 
@@ -207,3 +193,97 @@ export function UserInfoSkeleton({ userType }: { userType: string }) {
     </section>
   );
 }
+
+export const UserAction = ({
+  data,
+  userType,
+  path,
+}: {
+  path: string;
+  userType?: string;
+  data: UserData;
+}) => {
+  const { push } = useRouter();
+  const { isOpen, openModal, closeModal } = useModalContext();
+  const [isPending, startTransition] = useTransition();
+
+  const handleDeleteUser = () => {
+    startTransition(async () => {
+      const rsp = await deleteUserAction(data?._id, path);
+
+      if (rsp?.error) {
+        handleError(rsp?.message);
+      } else {
+        handleSuccess(rsp?.message);
+        closeModal(`delete-${data?._id}`);
+        push(path);
+      }
+    });
+  };
+
+  const handleToggleUserAccess = () => {
+    startTransition(async () => {
+      const rsp = await toggleUserAccessAction(
+        data?._id,
+        data?.isSuspended,
+        path,
+      );
+
+      if (rsp?.error) {
+        handleError(rsp?.message);
+      } else {
+        handleSuccess(rsp?.message);
+        closeModal(`access-${data?._id}`);
+      }
+    });
+  };
+
+  return (
+    <>
+      <div className="space-y-3">
+        <Button
+          className="alt-btn w-full"
+          onClick={() => openModal(`access-${data?._id}`)}
+        >
+          {data?.isSuspended ? "Reinstate" : "Suspend"} {userType}
+        </Button>
+        <Button
+          className="outline-btn border-error! text-error! w-full"
+          onClick={() => openModal(`delete-${data?._id}`)}
+        >
+          Delete {userType}
+        </Button>
+      </div>
+
+      {isOpen[`access-${data?._id}`] && (
+        <ActionModals
+          icon={<WarningIcon />}
+          id={`access-${data?._id}`}
+          title={data?.isSuspended ? "Reinstate User" : "Suspend User"}
+          subTitle={`Are you sure you want to ${data?.isSuspended ? "reinstate" : "suspend"} this user?`}
+          subtitleClass="text-grey-300!"
+          actionTitle={`Yes, ${data?.isSuspended ? "Reinstate" : "Suspend"}`}
+          closeTitle="No, Cancel"
+          btnSecClass="outline-btn"
+          action={handleToggleUserAccess}
+          loading={isPending}
+        />
+      )}
+
+      {isOpen[`delete-${data?._id}`] && (
+        <ActionModals
+          icon={<WarningIcon />}
+          id={`delete-${data?._id}`}
+          title={`Delete ${userType}`}
+          subTitle={`Are you sure you want to delete this ${userType}?`}
+          subtitleClass="text-grey-300!"
+          actionTitle="Yes, Delete"
+          closeTitle="No, Cancel"
+          btnSecClass="outline-btn"
+          action={handleDeleteUser}
+          loading={isPending}
+        />
+      )}
+    </>
+  );
+};

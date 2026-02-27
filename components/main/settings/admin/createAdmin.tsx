@@ -116,7 +116,6 @@ export const CreateAdmin = () => {
 };
 
 export const AdminAction = ({ data }: { data: UserData }) => {
-  console.log("data>>", data);
   const { isOpen, openModal, closeModal } = useModalContext();
 
   const [isPending, startTransition] = useTransition();
@@ -134,7 +133,7 @@ export const AdminAction = ({ data }: { data: UserData }) => {
     });
   };
 
-  const handleManageUser = () => {
+  const handleToggleUserAccess = () => {
     startTransition(async () => {
       const rsp = await toggleUserAccessAction(
         data?._id,
@@ -156,9 +155,9 @@ export const AdminAction = ({ data }: { data: UserData }) => {
       <div className="flex items-center gap-2">
         <Button
           className="outline-btn bg-Line"
-          onClick={() => openModal(`suspend-${data?._id}`)}
+          onClick={() => openModal(`access-${data?._id}`)}
         >
-          Suspend
+          {data?.isSuspended ? "Reinstate" : "Suspend"}
         </Button>
         <Button
           className="bg-error-100 border-error-600 border"
@@ -178,7 +177,7 @@ export const AdminAction = ({ data }: { data: UserData }) => {
           actionTitle="Yes, Suspend"
           closeTitle="No, Cancel"
           btnSecClass="outline-btn"
-          action={handleManageUser}
+          action={handleToggleUserAccess}
           loading={isPending}
         />
       )}

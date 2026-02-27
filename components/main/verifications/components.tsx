@@ -19,9 +19,6 @@ import { usePaginationContext } from "@/context/paginateContext";
 import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
 import TablePagination from "@/components/ui/tableComponent/tablePagination";
 import { EmptyState } from "@/components/ui/emptyState";
-import { deleteUserAction } from "@/libs/actions/users.actions";
-import { handleError, handleSuccess } from "@/utils/helper";
-import { useTransition } from "react";
 
 export const MentorAvatar = ({
   profilePhoto,
@@ -264,128 +261,6 @@ export const MentorReqAction = ({
             </DialogFooter>
           </section>
         </ModalWrapper>
-      )}
-    </>
-  );
-};
-
-export const UserAction = ({
-  data,
-  userType,
-}: {
-  userType: string;
-  data: UserData;
-}) => {
-  const { isOpen, openModal } = useModalContext();
-  return (
-    <>
-      <div className="space-y-3">
-        <Button
-          className="alt-btn w-full"
-          onClick={() => openModal(`suspend-${data?._id}`)}
-        >
-          Suspend {userType}
-        </Button>
-        <Button
-          className="outline-btn border-error! text-error! w-full"
-          onClick={() => openModal(`delete-${data?._id}`)}
-        >
-          Delete {userType}
-        </Button>
-      </div>
-
-      {isOpen[`suspend-${data?._id}`] && (
-        <ActionModals
-          icon={<WarningIcon />}
-          id={`suspend-${data?._id}`}
-          title="Suspend Mentor"
-          subTitle="Are you sure you want to suspend this mentor?"
-          subtitleClass="text-grey-300!"
-          actionTitle="Yes, Suspend"
-          closeTitle="No, Cancel"
-          btnSecClass="outline-btn"
-          action={() => {}}
-        />
-      )}
-
-      {isOpen[`delete-${data?._id}`] && (
-        <ActionModals
-          icon={<WarningIcon />}
-          id={`delete-${data?._id}`}
-          title="Delete Mentor"
-          subTitle="Are you sure you want to delete this mentor?"
-          subtitleClass="text-grey-300!"
-          actionTitle="Yes, Delete"
-          closeTitle="No, Cancel"
-          btnSecClass="outline-btn"
-          action={() => {}}
-        />
-      )}
-    </>
-  );
-};
-
-export const MenteeAction = ({ data }: { data: UserData }) => {
-  const { isOpen, openModal, closeModal } = useModalContext();
-
-  const [isPending, startTransition] = useTransition();
-
-  const handleDeleteUser = () => {
-    startTransition(async () => {
-      const rsp = await deleteUserAction(data?._id, "/administrator");
-
-      if (rsp?.error) {
-        handleError(rsp?.message);
-      } else {
-        handleSuccess(rsp?.message);
-        closeModal(`delete-${data?._id}`);
-      }
-    });
-  };
-
-  return (
-    <>
-      <div className="space-y-3">
-        <Button
-          className="alt-btn w-full"
-          onClick={() => openModal(`suspend-${data?._id}`)}
-        >
-          Suspend Mentee
-        </Button>
-        <Button
-          className="outline-btn border-error! text-error! w-full"
-          onClick={() => openModal(`delete-${data?._id}`)}
-        >
-          Delete Mentee
-        </Button>
-      </div>
-
-      {isOpen[`suspend-${data?._id}`] && (
-        <ActionModals
-          icon={<WarningIcon />}
-          id={`suspend-${data?._id}`}
-          title="Suspend Mentee"
-          subTitle="Are you sure you want to suspend this mentee?"
-          subtitleClass="text-grey-300!"
-          actionTitle="Yes, Suspend"
-          closeTitle="No, Cancel"
-          btnSecClass="outline-btn"
-          action={() => {}}
-        />
-      )}
-
-      {isOpen[`delete-${data?._id}`] && (
-        <ActionModals
-          icon={<WarningIcon />}
-          id={`delete-${data?._id}`}
-          title="Delete Mentee"
-          subTitle="Are you sure you want to delete this mentee?"
-          subtitleClass="text-grey-300!"
-          actionTitle="Yes, Delete"
-          closeTitle="No, Cancel"
-          btnSecClass="outline-btn"
-          action={() => {}}
-        />
       )}
     </>
   );

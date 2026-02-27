@@ -1,8 +1,6 @@
 import Consultation from "@/components/main/users/mentees/consultation";
-import {
-  MenteeAction,
-  MentorAvatar,
-} from "@/components/main/verifications/components";
+import { UserAction } from "@/components/main/users/userComponents";
+import { MentorAvatar } from "@/components/main/verifications/components";
 import { ErrorUI } from "@/components/ui/emptyState";
 import Field from "@/components/ui/field";
 import GoBackBtn from "@/components/ui/goBackBtn";
@@ -48,7 +46,6 @@ export default async function Page({
       <main className="flex flex-wrap gap-4">
         <section className="min-h-5/6 w-full space-y-8 rounded-xl bg-white p-4 lg:w-4/12">
           <MentorAvatar {...mentee} />
-
           <ul className="space-y-4">
             <li>
               <Field
@@ -70,7 +67,7 @@ export default async function Page({
             <li>
               <Field
                 label="Consultations"
-                value={"258"}
+                value={mentee?.totalBookings}
                 className="flex flex-col-reverse gap-1"
                 valueClassName="text-start font-semibold"
               />
@@ -79,14 +76,13 @@ export default async function Page({
             <li>
               <Field
                 label="Templates bought"
-                value={"2"}
+                value={mentee.totalTemplatesBought}
                 className="flex flex-col-reverse gap-1"
                 valueClassName="text-start font-semibold"
               />
             </li>
           </ul>
-
-          <MenteeAction data={mentee} />
+          <UserAction data={mentee} userType="Mentee" path="/mentees" />{" "}
         </section>
 
         <aside className="flex-1 space-y-8 rounded-xl bg-white p-4">
