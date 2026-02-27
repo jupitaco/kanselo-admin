@@ -1,47 +1,47 @@
 "use client";
-import React from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import FormInput from "@/components/ui/formInput";
 import Button from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/authContext";
+import { ActionFormStatus } from "@/types/global";
+import { forgotPasswordRequestAction } from "@/libs/actions/auth.actions";
+import { handleError, handleSuccess } from "@/utils/helper";
 
 const PasswordChangeReqForm = () => {
-  // const { push } = useRouter();
+  const { push } = useRouter();
+  const [formData, setFormData] = useState("");
 
-  // const { setUserData } = useAuthContext();
+  const { setUserData } = useAuthContext();
 
-  // const initialStatus: ActionFormStatus & { data: UserDataAndAccessToken } = {
-  //   error: false,
-  //   message: '',
-  //   data: {} as UserDataAndAccessToken,
-  // };
+  const initialStatus: ActionFormStatus = {
+    error: false,
+    message: "",
+  };
 
-  // const [state, formAction, isPending] = useActionState(
-  //   forgotPasswordRequestAction,
-  //   initialStatus,
-  // );
+  const [state, formAction, isPending] = useActionState(
+    forgotPasswordRequestAction,
+    initialStatus,
+  );
 
-  // const [formData, setFormData] = useState('');
-
-  // useEffect(() => {
-  //   if (state?.error) {
-  //     handleError('Reset Password Request', state?.message);
-  //   } else if (state?.message) {
-  //     setUserData((prev) => ({
-  //       ...prev,
-  //       email: formData,
-  //     }));
-  //     handleSuccess(
-  //       'Reset Password Request',
-  //       state?.message,
-  //       push,
-  //       `/forgot-password-code?email=${formData}`,
-  //     );
-  //   }
-  // }, [state, push, formData, setUserData]);
+  useEffect(() => {
+    if (state?.error) {
+      handleError(state?.message);
+    } else if (state?.message) {
+      setUserData((prev) => ({
+        ...prev,
+        email: formData,
+      }));
+      handleSuccess(
+        state?.message,
+        push,
+        `/forgot-password-code?email=${formData}`,
+      );
+    }
+  }, [state, push, formData, setUserData]);
 
   return (
-    <form
-    // action={formAction}
-    >
+    <form action={formAction}>
       <article className="mt-5 w-full">
         <FormInput
           id="email"
@@ -49,16 +49,12 @@ const PasswordChangeReqForm = () => {
           type="email"
           label="Email Address"
           placeholder="Enter your email"
+          onChange={(e) => setFormData(e.target.value)}
           required
         />
       </article>
       <article className="mt-10">
-        <Button
-          link
-          href="/verify-email"
-          className="pry-btn w-full"
-          type="submit"
-        >
+        <Button className="pry-btn w-full" type="submit" loading={isPending}>
           Continue
         </Button>
       </article>

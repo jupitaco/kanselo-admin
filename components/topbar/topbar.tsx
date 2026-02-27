@@ -5,19 +5,16 @@ import Hambugger from "./hambugger";
 import "./navbar.css";
 import { usePathname, useSearchParams } from "next/navigation";
 import { RenderNotifs } from "./notifications/notifications";
+import { useAuthContext } from "@/context/authContext";
+import { UserData } from "@/types/auths";
+import { useEffect } from "react";
 
-const TopBar = () => {
+const TopBar = ({ user }: { user: UserData }) => {
+  const { setCurrentUserData } = useAuthContext();
   const searchParams = useSearchParams();
-  // const rsp = await getCurrentUserApi();
-  // const userData = rsp?.ok ? rsp?.body?.user : null;
 
-  const mentorName = searchParams.get("mentorName") || searchParams.get("menteeName");
-
-  const userData = {
-    firstName: "Richard ",
-    lastName: "Hederson",
-    email: "richardhederson@gmail.com",
-  };
+  const mentorName =
+    searchParams.get("mentorName") || searchParams.get("menteeName");
 
   const path = usePathname();
 
@@ -28,6 +25,11 @@ const TopBar = () => {
     ?.replace(/-/g, " ");
 
   const title = cleanedPath + `${mentorName ? ` - ${mentorName}` : ""}`;
+
+  useEffect(() => {
+    if (!user) return;
+    setCurrentUserData(user);
+  }, [user]);
 
   return (
     <>
@@ -42,7 +44,7 @@ const TopBar = () => {
             <div className="flex items-center justify-end gap-2 rounded-full! px-3 py-2">
               <figure className="relative size-12 overflow-hidden rounded-xl">
                 <Image
-                  src={allImages.avatar}
+                  src={user?.profilePhoto ?? allImages.noAvatar}
                   alt="profile"
                   className="h-full w-full object-cover"
                   fill
@@ -50,10 +52,8 @@ const TopBar = () => {
                 />
               </figure>
               <div className="flex-1">
-                <h5 className="text-sm font-medium">
-                  {userData?.firstName} {userData?.lastName}
-                </h5>
-                <small className="text-grey-400">{userData?.email}</small>
+                <h5 className="text-sm font-medium">{user?.fullName}</h5>
+                <small className="text-grey-400">{user?.email}</small>
               </div>
             </div>
           </article>

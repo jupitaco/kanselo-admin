@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import CopyToClipboardBtn from "../copyToClipboardBtn";
 import { GoDotFill } from "react-icons/go";
 import { getStatusColors } from "@/utils/helper";
@@ -11,7 +11,7 @@ export const OrderedID = ({ id }: { id: string }) => {
   return (
     <div className="flex items-center gap-1">
       {id?.slice(0, 6)}...
-      <CopyToClipboardBtn id={id} valuToCopy={id} />
+      <CopyToClipboardBtn id={id} valueToCopy={id} />
     </div>
   );
 };
@@ -33,10 +33,10 @@ export const AvatarCard = ({
 }: {
   label: string;
   subtext?: string;
-  image: string;
+  image: string | StaticImageData;
 }) => {
   return (
-    <div className="flex flex-1 gap-3 items-center">
+    <div className="flex flex-1 items-center gap-3">
       <figure className="relative size-12 overflow-hidden rounded-xl">
         <Image src={image} alt="" sizes="100%" fill />
       </figure>
@@ -48,13 +48,14 @@ export const AvatarCard = ({
   );
 };
 
-
-export default function TableWrapper({ title, columns, data }: { title: string; columns: Column<AllAssets>[]; data: AllAssets[] }) {
-  return (
-    <TableComponent
-      title={title}
-      columns={columns}
-      data={data}
-    />
-  );
+export default function TableWrapper({
+  title,
+  columns,
+  data,
+}: {
+  title: string;
+  columns: Column<AllAssets>[];
+  data: AllAssets[];
+}) {
+  return <TableComponent title={title} columns={columns} data={data} />;
 }

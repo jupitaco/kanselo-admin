@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "../../libs/utils";
 import dynamic from "next/dynamic";
 
@@ -38,14 +39,60 @@ export const ApexChart = ({
   height?: number;
   type?: ApexTypesPops;
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [chartWidth, setChartWidth] = useState<string>("100%");
+
+  useEffect(() => {
+    if (!data?.[0]?.data || !options?.xaxis?.categories) return;
+
+    const dataPoints = data[0].data.length;
+
+    // Calculate width based on number of data points
+    // Adjust these values based on your chart type
+    const minWidth = 800; // minimum width in pixels
+    let widthPerPoint = 50; // pixels per data point
+
+    // Adjust for bar charts (need more space)
+    if (type === "bar") {
+      widthPerPoint = 80;
+    }
+
+    const calculatedWidth = Math.max(minWidth, dataPoints * widthPerPoint);
+    setChartWidth(`${calculatedWidth}px`);
+  }, [data, options, type]);
+
+
   return (
-    <main className={cn("w-full", className)}>
-      <ReactApexChart
-        options={options}
-        series={data}
-        type={type}
-        height={height || 350}
-      />
-    </main>
+    <div
+      ref={containerRef}
+      className={cn(
+        "w-full overflow-x-auto overflow-y-hidden", // Only X scroll, hide Y scroll
+        "xcustom-scrollbar",
+        className,
+      )}
+      style={{
+        // Ensure Y axis doesn't scroll
+        overflowY: "hidden",
+      }}
+    >
+      <div style={{ minWidth: chartWidth, width: "100%" }}>
+        <ReactApexChart
+          options={{
+            ...options,
+            chart: {
+              ...options?.chart,
+              width: chartWidth,
+              toolbar: {
+                show: true,
+                ...options?.chart?.toolbar,
+              },
+            },
+          }}
+          series={data}
+          type={type}
+          height={height || 350}
+        />
+      </div>
+    </div>
   );
 };

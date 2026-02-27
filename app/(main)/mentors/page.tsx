@@ -1,24 +1,22 @@
-
-import Mentors from '@/components/main/users/mentors/mentors';
-import Search from '@/components/ui/search';
-import { Metadata } from 'next';
-import React from 'react'
+import Mentors from "@/components/main/users/mentors/mentors";
+import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
+import { SearchParams } from "@/types/global";
+import { Metadata } from "next";
+import React, { Suspense, use } from "react";
 
 export const metadata: Metadata = {
-    title: "Mentors"
-}
+  title: "Mentors",
+};
 
-export default function Page() {
-    return (
-        <main className="p-5 space-y-7">
-            <section className='p-4 bg-white rounded-xl space-y-10'>
-                <header className='flex flex-wrap justify-between gap-4 items-center'>
-                    <h4 className='font-semibold'>All Mentors</h4>
-                    <Search placeholder='Search' className='max-w-fit!' />
-                </header>
-
-                <Mentors />
-            </section>
-        </main>
-    )
+export default function Page({ searchParams }: SearchParams) {
+  const p = use(searchParams);
+  return (
+    <main className="space-y-7 p-5">
+      <section className="space-y-10 rounded-xl bg-white p-4">
+        <Suspense fallback={<TableSkeleton columns={6} />}>
+          <Mentors searchParams={p} />
+        </Suspense>
+      </section>
+    </main>
+  );
 }

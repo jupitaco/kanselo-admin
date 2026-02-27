@@ -57,11 +57,19 @@ export const formatNumInThousands = (number: number | string) => {
   return formattedVal + "." + Number(decimalPart);
 };
 
-export const formatDate = (date: Date) => {
+export const formatDate = (date: Date, monthType?: "short" | "long") => {
   return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
-    month: "long",
+    month: monthType || "short",
     day: "numeric",
+  });
+};
+
+export const formatTime = (date: string) => {
+  return new Date(date).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "numeric",
   });
 };
 
@@ -78,15 +86,21 @@ export const getStatusColors = (status: string) => {
       "verified",
       "confirmed",
       "requested",
+      "credit",
     ].includes(statusLower)
   ) {
     return "success";
   }
 
   if (
-    ["declined", "failed", "timedout", "rejected", "cancelled"]?.includes(
-      statusLower,
-    )
+    [
+      "declined",
+      "failed",
+      "timedout",
+      "rejected",
+      "cancelled",
+      "debit",
+    ]?.includes(statusLower)
   ) {
     return "failed";
   }
@@ -97,3 +111,37 @@ export const getStatusColors = (status: string) => {
 
   return "fall-back";
 };
+
+export const queryBuilder = (query: { [key: string]: string }) => {
+  const filteredParams = Object.entries(query).filter(
+    ([_, v]) => v !== undefined && v !== "undefined" && v !== null && v !== "",
+  );
+
+  const params = new URLSearchParams(filteredParams);
+  return params;
+};
+
+export const getDayXAgo = (days: number) => {
+  const date = new Date();
+  date.setDate(date.getDate() - days);
+  return date;
+};
+
+export const formatDateToLocale = (date: Date) => {
+  //  will return the date as YYYY-MM-DD
+  return new Intl.DateTimeFormat("en-CA").format(date);
+};
+
+export function debouncer<T>(func: (val: T) => void, delay: number) {
+  let timeoutId: NodeJS.Timeout | null = null;
+
+  return (val: T) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(() => {
+      func(val);
+    }, delay);
+  };
+}

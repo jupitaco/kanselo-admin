@@ -1,60 +1,297 @@
-'use client'
-import { adminAssets, admincolData, bookingAssets, menteesColData, mentorsColData, mentorsData, recentBookingColData, reviewColData, reviewsData, templateColData, templateData } from "@/mock";
+"use client";
+import {
+  admincolData,
+  menteesColData,
+  mentorsColData,
+  recentBookingColData,
+  recentMentorsColData,
+} from "@/mock";
 import React from "react";
 import TableComponent from "@/components/ui/tableComponent/tableComponent";
-import { Mentor } from "@/types/global";
+import { usePaginationContext } from "@/context/paginateContext";
+import { EmptyState } from "@/components/ui/emptyState";
+import { UserData } from "@/types/auths";
+import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
+import TablePagination from "@/components/ui/tableComponent/tablePagination";
+import Search from "@/components/ui/search";
+import Skeleton from "@/components/ui/skeleton/skeleton";
+import { BsStarFill } from "react-icons/bs";
+import Button from "@/components/ui/button";
+import { BookingType } from "@/types/booking";
+import { useModalContext } from "@/context/modalContext";
+import ActionModals from "@/components/ui/modals/actionModals";
+import { WarningIcon } from "@/components/logout/logout";
+import {
+  deleteUserAction,
+  toggleUserAccessAction,
+} from "@/libs/actions/users.actions";
+import { handleError, handleSuccess } from "@/utils/helper";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 
-
-export const RecentMentorApplicationTable = ({ data }: { data: Mentor[] }) => {
+export const RecentMentorApplicationTable = ({
+  data,
+}: {
+  data: UserData[];
+}) => {
+  if (data?.length === 0) {
     return (
-        <TableComponent title='Mentors' columns={mentorsColData} data={data} />
-    )
-}
+      <EmptyState
+        title="No data"
+        subTitle="No new mentor application request yet."
+      />
+    );
+  }
+  return (
+    <>
+      <TableComponent
+        title="Mentors"
+        columns={recentMentorsColData}
+        data={data}
+      />
+    </>
+  );
+};
 
 export const MentorsTable = () => {
-    return (
-        <TableComponent title='Mentors' columns={mentorsColData} data={mentorsData} />
-    )
-}
+  const { data, isPending } = usePaginationContext();
+  if (data?.assets?.length === 0) {
+    return <EmptyState title="No Data" subTitle="No admin data" />;
+  }
 
-export const MentorTemplateTable = () => {
-    return (
-        <TableComponent title='Mentor Templates' columns={templateColData} data={templateData} />
-    )
-}
+  return (
+    <>
+      {isPending ? (
+        <TableSkeleton />
+      ) : (
+        <TableComponent
+          title="Mentors"
+          columns={mentorsColData}
+          data={data?.assets as UserData[]}
+        />
+      )}
 
-export const MentorReviewsTable = () => {
-    return (
-        <TableComponent title='Mentor Reviews' columns={reviewColData} data={reviewsData} />
-    )
-}
-
+      <TablePagination />
+    </>
+  );
+};
 
 export const MenteeConsultationTable = () => {
-    return (
-        <TableComponent
-            title="Booking & Scheduling"
-            columns={recentBookingColData}
-            data={bookingAssets}
-        />
-    );
-}
+  const { data, isPending } = usePaginationContext();
+  if (data?.assets?.length === 0) {
+    return <EmptyState title="No Data" subTitle="No mentees data" />;
+  }
 
+  return (
+    <>
+      {isPending ? (
+        <TableSkeleton />
+      ) : (
+        <TableComponent
+          title="Booking & Scheduling"
+          columns={recentBookingColData}
+          data={data?.assets as BookingType[]}
+        />
+      )}
+      <TablePagination />
+    </>
+  );
+};
 
 export const MenteesTable = () => {
+  const { data, isPending } = usePaginationContext();
+  if (data?.assets?.length === 0) {
+    return <EmptyState title="No Data" subTitle="No mentees data" />;
+  }
 
-    const data = [...mentorsData].reverse()
-    return (
-        <TableComponent title='Mentees' columns={menteesColData} data={data} />
-    )
-}
+  return (
+    <>
+      {isPending ? (
+        <TableSkeleton />
+      ) : (
+        <TableComponent
+          title="Mentees"
+          columns={menteesColData}
+          data={data?.assets as UserData[]}
+        />
+      )}
+
+      <TablePagination />
+    </>
+  );
+};
 
 export const AdminTable = () => {
+  const { data, isPending } = usePaginationContext();
+  if (data?.assets?.length === 0) {
+    return <EmptyState title="No Data" subTitle="No admin data" />;
+  }
 
-    return (
-        <TableComponent title='Administrators' columns={admincolData} data={adminAssets} />
-    )
+  return (
+    <>
+      {isPending ? (
+        <TableSkeleton />
+      ) : (
+        <TableComponent
+          title="Administrators"
+          columns={admincolData}
+          data={data?.assets as UserData[]}
+        />
+      )}
+
+      <TablePagination />
+    </>
+  );
+};
+
+export const UserHeader = ({ pageTitle }: { pageTitle: string }) => {
+  return (
+    <header className="flex flex-wrap items-center justify-between gap-4">
+      <h4 className="font-semibold">All {pageTitle}</h4>
+      <Search placeholder="Search" className="max-w-fit!" />
+    </header>
+  );
+};
+
+export function UserInfoSkeleton({ userType }: { userType: string }) {
+  return (
+    <section className="min-h-5/6 w-full space-y-8 rounded-xl bg-white p-4 lg:w-4/12">
+      <div className="border-grey-200 space-y-3 overflow-hidden rounded-xl border bg-white">
+        <Skeleton className="h-60!" />
+
+        <div className="space-y-2 p-4">
+          <Skeleton className="h-4! w-20!" />
+          <Skeleton className="h-4! w-40!" />
+        </div>
+      </div>
+
+      <ul className="space-y-6">
+        <li className="space-y-3">
+          <h5 className="font-semibold">Bio</h5>
+          <Skeleton className="h-4! w-40!" />
+          <Skeleton className="h-4! w-40!" />
+        </li>
+        <li className="space-y-1">
+          <h5 className="flex items-center gap-1">
+            $<Skeleton className="h-4! w-20!" />
+          </h5>
+          <p className="text-grey-400 text-xs font-medium">per session</p>
+        </li>
+        <li className="flex items-center justify-between gap-3">
+          <h5 className="font-semibold">Consultations</h5>
+          <Skeleton className="h-4! w-40!" />
+        </li>
+        <li className="flex items-center justify-between gap-3">
+          <h5 className="font-semibold">Rating</h5>
+          <h5 className="flex items-center gap-1 font-semibold">
+            <BsStarFill className="rated" />
+            <Skeleton className="h-4! w-6!" />
+          </h5>
+        </li>
+      </ul>
+
+      <Skeleton className="h-10!" />
+
+      <div className="space-y-3">
+        <Button className="alt-btn w-full">Suspend {userType}</Button>
+        <Button className="outline-btn border-error! text-error! w-full">
+          Delete {userType}
+        </Button>
+      </div>
+    </section>
+  );
 }
 
+export const UserAction = ({
+  data,
+  userType,
+  path,
+}: {
+  path: string;
+  userType?: string;
+  data: UserData;
+}) => {
+  const { push } = useRouter();
+  const { isOpen, openModal, closeModal } = useModalContext();
+  const [isPending, startTransition] = useTransition();
 
+  const handleDeleteUser = () => {
+    startTransition(async () => {
+      const rsp = await deleteUserAction(data?._id, path);
 
+      if (rsp?.error) {
+        handleError(rsp?.message);
+      } else {
+        handleSuccess(rsp?.message);
+        closeModal(`delete-${data?._id}`);
+        push(path);
+      }
+    });
+  };
+
+  const handleToggleUserAccess = () => {
+    startTransition(async () => {
+      const rsp = await toggleUserAccessAction(
+        data?._id,
+        data?.isSuspended,
+        path,
+      );
+
+      if (rsp?.error) {
+        handleError(rsp?.message);
+      } else {
+        handleSuccess(rsp?.message);
+        closeModal(`access-${data?._id}`);
+      }
+    });
+  };
+
+  return (
+    <>
+      <div className="space-y-3">
+        <Button
+          className="alt-btn w-full"
+          onClick={() => openModal(`access-${data?._id}`)}
+        >
+          {data?.isSuspended ? "Reinstate" : "Suspend"} {userType}
+        </Button>
+        <Button
+          className="outline-btn border-error! text-error! w-full"
+          onClick={() => openModal(`delete-${data?._id}`)}
+        >
+          Delete {userType}
+        </Button>
+      </div>
+
+      {isOpen[`access-${data?._id}`] && (
+        <ActionModals
+          icon={<WarningIcon />}
+          id={`access-${data?._id}`}
+          title={data?.isSuspended ? "Reinstate User" : "Suspend User"}
+          subTitle={`Are you sure you want to ${data?.isSuspended ? "reinstate" : "suspend"} this user?`}
+          subtitleClass="text-grey-300!"
+          actionTitle={`Yes, ${data?.isSuspended ? "Reinstate" : "Suspend"}`}
+          closeTitle="No, Cancel"
+          btnSecClass="outline-btn"
+          action={handleToggleUserAccess}
+          loading={isPending}
+        />
+      )}
+
+      {isOpen[`delete-${data?._id}`] && (
+        <ActionModals
+          icon={<WarningIcon />}
+          id={`delete-${data?._id}`}
+          title={`Delete ${userType}`}
+          subTitle={`Are you sure you want to delete this ${userType}?`}
+          subtitleClass="text-grey-300!"
+          actionTitle="Yes, Delete"
+          closeTitle="No, Cancel"
+          btnSecClass="outline-btn"
+          action={handleDeleteUser}
+          loading={isPending}
+        />
+      )}
+    </>
+  );
+};

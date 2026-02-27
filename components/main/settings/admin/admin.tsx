@@ -1,12 +1,32 @@
-import Button from "@/components/ui/button";
+import { getAllAdminApi } from "@/services/apis/auth.api";
 import { AdminTable } from "../../users/userComponents";
 
-export default function Administrator() {
-  return (<section className="space-y-6 p-5 rounded-2xl bg-white">
-    <header className="flex flex-wrap justify-between items-center gap-4">
-      <h4>All Administrators</h4>
-      <Button link href="/settings/administrator/create-admin" className="pry-btn">Add Administrators</Button>
-    </header>
-    <AdminTable />
-  </section>)
-};
+import { PaginationProvider } from "@/context/paginateContext";
+import { SearchPageParams } from "@/types/global";
+import { ErrorUI } from "@/components/ui/emptyState";
+
+export default async function Administrator({
+  params,
+}: {
+  params: SearchPageParams;
+}) {
+  const rsp = await getAllAdminApi(params?.page || "1");
+
+  if (!rsp?.ok) {
+    return <ErrorUI code={rsp?.body?.code} message={rsp?.body?.message} />;
+  }
+
+  const { admins, page, limit, total } = rsp?.body?.data;
+
+  const adminData = {
+    page,
+    total,
+    limit,
+    assets: admins,
+  };
+  return (
+    <PaginationProvider data={adminData}>
+      <AdminTable />
+    </PaginationProvider>
+  );
+}

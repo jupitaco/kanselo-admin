@@ -2,10 +2,10 @@
 
 import React, { ChangeEvent, useState, type JSX, type ReactNode } from "react";
 import { BsFillEyeSlashFill, BsFillEyeFill } from "react-icons/bs";
-import ErrorMessage from "../errorMessage";
 import { Checkbox } from "./checkbox/checkbox";
 import { DatePicker } from "./datePicker/datePicker";
 import SelectInput, { ItemsType } from "./select/selectInput";
+import { ErrorMessage } from "../emptyState";
 
 export interface IFormInputProps extends React.InputHTMLAttributes<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -17,12 +17,12 @@ export interface IFormInputProps extends React.InputHTMLAttributes<
   value?: string | number | readonly string[] | undefined;
   DateTimeValue?: Date | undefined;
   type?:
-  | React.HTMLInputTypeAttribute
-  | "textarea"
-  | "select"
-  | "shadSelect"
-  | "date"
-  | "time";
+    | React.HTMLInputTypeAttribute
+    | "textarea"
+    | "select"
+    | "shadSelect"
+    | "date"
+    | "time";
   inputClassName?: string;
   labelClassName?: string;
   className?: string;
@@ -157,8 +157,9 @@ const FormInput = ({
             name={name}
             type={showPassword[id] ? "text" : "password"}
             onChange={onChange}
-            className={`${error ? "errors" : ""
-              } form-controls ${inputClassName}`}
+            className={`${
+              error ? "errors" : ""
+            } form-controls ${inputClassName}`}
             placeholder={placeholder}
             value={value}
             disabled={disabled}

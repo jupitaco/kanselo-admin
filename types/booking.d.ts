@@ -1,27 +1,6 @@
-export type BookingStatus = "active" | "cancelled";
+import { ApiResponse, UserData } from "./auths";
 
-export type BookingType = {
-  id: string;
-  mentor: {
-    name: string;
-    avatar: string;
-  };
-  mentee: {
-    name: string;
-    avatar: string;
-  };
-  location: {
-    city: string;
-    country: string;
-  };
-  date: string;
-  time: string;
-  durationMinutes: number;
-  sessions: string;
-  review: string;
-  status: BookingStatus;
-  rating: number;
-};
+export type BookingStatus = "active" | "cancelled";
 
 export type DayOfWeek =
   | "monday"
@@ -41,4 +20,89 @@ export type OfficeDay = {
   title: string;
   checked: boolean;
   time: TimeRange[];
+};
+
+export type BookingStatsType = {
+  value: number;
+  percentageChange: number;
+  trend: "increase" | "decrease";
+};
+
+export type BookingStatsRsp = ApiResponse & {
+  data: {
+    totalConsultations: BookingStatsType;
+    totalTemplates: BookingStatsType;
+    totalRevenue: BookingStatsType;
+  };
+};
+
+export type RevenueGraphType = {
+  date: string;
+  bookingRevenue: number;
+  templateRevenue: number;
+  totalRevenue: number;
+};
+
+export type RevenueGraphRsp = ApiResponse & {
+  data: RevenueGraphType[];
+};
+
+export type BookedMentorType = {
+  _id: string;
+  fullName: string;
+  profilePhoto: string;
+  city: string;
+  state: string;
+  country: string;
+  bio: string;
+};
+
+export type BookedMenteeType = {
+  _id: string;
+  fullName: string;
+  profilePhoto: string;
+  city: string;
+  state: string;
+  country: string;
+};
+
+export type BookingType = {
+  _id: string;
+  userId: BookedMenteeType;
+  mentorId: BookedMentorType;
+  message: string;
+  session: number;
+  selectedDate: string;
+  selectedTime: string;
+  selectedEndTime: string;
+  status: string;
+  ratings: number;
+  totalAmountPaid: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UpcomingEventsRsp = ApiResponse & {
+  data: BookingType[];
+};
+
+export type TopMentorType = { bookingCount: number; mentor: UserData };
+export type TopMentorsRsp = ApiResponse & {
+  data: TopMentorType[];
+};
+
+export type BookingRsp = ApiResponse & {
+  data: {
+    bookings: BookingType[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+};
+
+export type ManageMentorReqType = {
+  status: "DECLINED" | "APPROVED";
+  declineReason?: string;
+  canReapplyAsMentor?: boolean;
 };
