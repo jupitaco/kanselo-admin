@@ -13,12 +13,7 @@ import { useModalContext } from "@/context/modalContext";
 import { usePaginationContext } from "@/context/paginateContext";
 import { transactioncolData } from "@/mock";
 import { TransactionType } from "@/types/users";
-import {
-  formatDate,
-  formatDateToLocale,
-  formatNumInThousands,
-  formatTime,
-} from "@/utils/helper";
+import { formatDate, formatNumInThousands, formatTime } from "@/utils/helper";
 import React from "react";
 import { FaEye } from "react-icons/fa6";
 
@@ -46,7 +41,7 @@ export const TransactionTable = () => {
 };
 
 export const TransactionAction = ({ data }: { data: TransactionType }) => {
-  const { isOpen, openModal, closeModal } = useModalContext();
+  const { isOpen, openModal } = useModalContext();
 
   const transId = data?._id;
 

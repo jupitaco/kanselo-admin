@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Calendar } from "./formInput/datePicker/calendar";
 import Button from "./button";
@@ -9,18 +9,9 @@ import { FaChevronDown } from "react-icons/fa6";
 import { DateRange } from "react-day-picker";
 import PopoverWrapper from "./popover/popoverWrapper";
 
-interface SelectDateFilter {
-  startDate?: string;
-  endDate?: string;
-}
-
-export const SelectDateFilter: FC<SelectDateFilter> = ({
-  startDate,
-  endDate,
-}) => {
+export const SelectDateFilter = () => {
   const { startDateValue, endDateValue, handleDate, clearDate, isPending } =
     useDateFilter();
-  const [openDate, setOpenDate] = useState(false);
 
   // Initialize from URL
   const [date, setDate] = useState<DateRange | undefined>(() => ({
@@ -39,14 +30,12 @@ export const SelectDateFilter: FC<SelectDateFilter> = ({
   const handleApplyDate = () => {
     if (date?.from && date?.to) {
       handleDate(date.from, date.to);
-      setOpenDate(false);
     }
   };
 
   const handleClearDate = () => {
     clearDate();
     setDate({ from: undefined, to: undefined });
-    setOpenDate(false);
   };
 
   return (

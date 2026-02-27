@@ -1,8 +1,6 @@
 import RenderVerificationsByStatus from "@/components/main/verifications/renderVerificationsByStatus";
-import Search from "@/components/ui/search";
 import { SearchParams } from "@/types/global";
 import { Metadata } from "next";
-import Link from "next/link";
 import React, { use } from "react";
 
 export const metadata: Metadata = { title: "Verifications" };

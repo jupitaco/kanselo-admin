@@ -46,7 +46,6 @@ export const ApexChart = ({
     if (!data?.[0]?.data || !options?.xaxis?.categories) return;
 
     const dataPoints = data[0].data.length;
-    const categories = options.xaxis.categories.length;
 
     // Calculate width based on number of data points
     // Adjust these values based on your chart type
@@ -62,11 +61,6 @@ export const ApexChart = ({
     setChartWidth(`${calculatedWidth}px`);
   }, [data, options, type]);
 
-  // Check if scroll is needed
-  const needsScroll = () => {
-    if (!containerRef.current) return false;
-    return containerRef.current.scrollWidth > containerRef.current.clientWidth;
-  };
 
   return (
     <div

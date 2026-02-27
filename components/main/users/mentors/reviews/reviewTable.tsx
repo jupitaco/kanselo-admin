@@ -1,7 +1,6 @@
 "use client";
 import { EmptyState } from "@/components/ui/emptyState";
 import TableComponent from "@/components/ui/tableComponent/tableComponent";
-import TablePagination from "@/components/ui/tableComponent/tablePagination";
 import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
 import { usePaginationContext } from "@/context/paginateContext";
 import { reviewColData } from "@/mock";

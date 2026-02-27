@@ -100,3 +100,9 @@ export type BookingRsp = ApiResponse & {
     totalPages: number;
   };
 };
+
+export type ManageMentorReqType = {
+  status: "DECLINED" | "APPROVED";
+  declineReason?: string;
+  canReapplyAsMentor?: boolean;
+};

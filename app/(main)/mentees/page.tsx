@@ -1,5 +1,4 @@
 import Mentees from "@/components/main/users/mentees/mentees";
-import Search from "@/components/ui/search";
 import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
 import { SearchParams } from "@/types/global";
 import { Metadata } from "next";

@@ -11,7 +11,7 @@ export const OrderedID = ({ id }: { id: string }) => {
   return (
     <div className="flex items-center gap-1">
       {id?.slice(0, 6)}...
-      <CopyToClipboardBtn id={id} valuToCopy={id} />
+      <CopyToClipboardBtn id={id} valueToCopy={id} />
     </div>
   );
 };

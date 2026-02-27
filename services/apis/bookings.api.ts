@@ -5,6 +5,7 @@ import {
   BookingRsp,
   BookingStatsRsp,
   BookingType,
+  ManageMentorReqType,
   RevenueGraphRsp,
   TopMentorsRsp,
   UpcomingEventsRsp,
@@ -80,6 +81,17 @@ export const getRevenueGraphByDateApi = (
 ) => {
   return Api.get<RevenueGraphRsp>(
     `/booking/admin/analytics/revenue-graph?${queryBuilder({ startDate, endDate })}`,
+    true,
+  );
+};
+
+export const manageMentorRequestApi = (
+  mentorId: string,
+  body: ManageMentorReqType,
+) => {
+  return Api.patch<ManageMentorReqType, ApiResponse>(
+    `/user/admin/verification/${mentorId}/approval`,
+    body,
     true,
   );
 };

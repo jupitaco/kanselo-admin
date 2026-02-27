@@ -19,8 +19,8 @@ export const Welcome = () => {
 
 export const Stats = async () => {
   const rsp = await getAllStatsApi();
-  const statsData = rsp?.ok ? rsp?.body?.data : ({} as BookingStatsRsp);
 
+  const statsData = rsp?.ok ? rsp?.body?.data : ({} as BookingStatsRsp["data"]);
   return (
     <ul className="grid grid-cols-1 items-center gap-4 rounded-xl bg-white p-5 lg:grid-cols-3">
       <li className="flex items-center gap-2">

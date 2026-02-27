@@ -81,13 +81,12 @@
   }
 
   textarea,
-  input {
-    @apply text-grey-500 text-sm;
-  }
-
-  textarea,
   input::placeholder {
     @apply text-grey-300 text-sm;
+  }
+  textarea,
+  input {
+    @apply text-grey-500 text-sm;
   }
 
   h1 {

@@ -1,5 +1,4 @@
 import React from "react";
-import { mentorsData } from "@/mock";
 import { RecentMentorApplicationTable } from "../users/userComponents";
 import { getAllMentorRequestApi } from "@/services/apis/bookings.api";
 import { ErrorUI } from "@/components/ui/emptyState";

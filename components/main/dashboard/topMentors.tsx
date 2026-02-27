@@ -1,9 +1,9 @@
 import { ErrorUI } from "@/components/ui/emptyState";
 import Skeleton from "@/components/ui/skeleton/skeleton";
-import { topMentors } from "@/mock";
 import { allImages } from "@/public/images/images";
 import { getTopMentorsApi } from "@/services/apis/bookings.api";
 import Image from "next/image";
+import Link from "next/link";
 
 export const TopMentors = async () => {
   const rsp = await getTopMentorsApi();
@@ -17,21 +17,26 @@ export const TopMentors = async () => {
   return (
     <ul className="divide-Line space-y-3 divide-y">
       {data.map(({ mentor, bookingCount }, idx) => (
-        <li key={idx} className="flex items-center gap-3 pb-2">
-          <Image
-            src={mentor?.profilePhoto || allImages.noAvatar}
-            alt={mentor?.fullName}
-            className="rounded-xl border-3 border-white object-cover"
-            width={48}
-            height={48}
-          />
+        <li key={idx}>
+          <Link
+            href={`mentors/view/${mentor?._id}?mentorName=${encodeURIComponent(mentor?.fullName)}`}
+            className="flex items-center gap-3 pb-2"
+          >
+            <Image
+              src={mentor?.profilePhoto || allImages.noAvatar}
+              alt={mentor?.fullName}
+              className="rounded-xl border-3 border-white object-cover"
+              width={48}
+              height={48}
+            />
 
-          <div>
-            <p className="font-medium">{mentor?.fullName}</p>
-            <small className="text-grey-300">
-              {bookingCount} Consultations
-            </small>
-          </div>
+            <div>
+              <p className="font-medium">{mentor?.fullName}</p>
+              <small className="text-grey-300">
+                {bookingCount} Consultations
+              </small>
+            </div>
+          </Link>
         </li>
       ))}
     </ul>

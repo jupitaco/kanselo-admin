@@ -6,6 +6,7 @@ import Skeleton from "@/components/ui/skeleton/skeleton";
 import { BookingType } from "@/types/booking";
 import { formatDateToLocale } from "@/utils/helper";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { ReactNode, useTransition } from "react";
 
@@ -58,34 +59,39 @@ export const AppointmentsCalendar = ({ data }: { data: BookingType[] }) => {
     <AppointmentsCalendarWrapper>
       <ul className="divide-Line space-y-4 divide-y">
         {data.map((appointment) => (
-          <li key={appointment._id} className="card flex gap-1 overflow-hidden">
-            <div className="bg-secondary min-h-full w-4" />
-            <div className="group flex items-center gap-4 p-2">
-              <div className="flex-1">
-                <h5 className="text-xs! font-medium">
-                  {appointment.mentorId?.bio}
-                </h5>
-                <p className="text-grey-300 text-xs">
-                  {appointment.selectedTime} - {appointment.selectedEndTime}
-                </p>
+          <li key={appointment._id}>
+            <Link
+              href="/appointments"
+              className="card flex gap-1 overflow-hidden"
+            >
+              <div className="bg-secondary min-h-full w-4" />
+              <div className="group flex items-center gap-4 p-2">
+                <div className="flex-1">
+                  <h5 className="text-xs! font-medium">
+                    {appointment.mentorId?.bio}
+                  </h5>
+                  <p className="text-grey-300 text-xs">
+                    {appointment.selectedTime} - {appointment.selectedEndTime}
+                  </p>
+                </div>
+                <div className="flex">
+                  <Image
+                    src={appointment.mentorId?.profilePhoto}
+                    alt={appointment.mentorId?.fullName}
+                    className="rounded-xl border-3 border-white object-cover"
+                    width={48}
+                    height={48}
+                  />
+                  <Image
+                    src={appointment.userId?.profilePhoto}
+                    alt={appointment.userId?.fullName}
+                    className="-translate-x-5 rounded-xl border-3 border-white object-cover shadow-md transition-transform ease-in-out group-hover:translate-x-0"
+                    width={48}
+                    height={48}
+                  />
+                </div>
               </div>
-              <div className="flex">
-                <Image
-                  src={appointment.mentorId?.profilePhoto}
-                  alt={appointment.mentorId?.fullName}
-                  className="rounded-xl border-3 border-white object-cover"
-                  width={48}
-                  height={48}
-                />
-                <Image
-                  src={appointment.userId?.profilePhoto}
-                  alt={appointment.userId?.fullName}
-                  className="-translate-x-5 rounded-xl border-3 border-white object-cover shadow-md transition-transform ease-in-out group-hover:translate-x-0"
-                  width={48}
-                  height={48}
-                />
-              </div>
-            </div>
+            </Link>
           </li>
         ))}
       </ul>

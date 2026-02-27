@@ -16,12 +16,6 @@ const TopBar = ({ user }: { user: UserData }) => {
   const mentorName =
     searchParams.get("mentorName") || searchParams.get("menteeName");
 
-  const userData = {
-    firstName: "Richard ",
-    lastName: "Hederson",
-    email: "richardhederson@gmail.com",
-  };
-
   const path = usePathname();
 
   const cleanedPath = path

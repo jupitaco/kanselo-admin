@@ -34,6 +34,14 @@ export const RecentMentorApplicationTable = ({
 }: {
   data: UserData[];
 }) => {
+  if (data?.length === 0) {
+    return (
+      <EmptyState
+        title="No data"
+        subTitle="No new mentor application request yet."
+      />
+    );
+  }
   return (
     <>
       <TableComponent

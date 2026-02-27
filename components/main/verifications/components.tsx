@@ -18,7 +18,11 @@ import { UserData } from "@/types/auths";
 import { usePaginationContext } from "@/context/paginateContext";
 import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
 import TablePagination from "@/components/ui/tableComponent/tablePagination";
-import { EmptyState } from "@/components/ui/emptyState";
+import { EmptyState, ErrorMessage } from "@/components/ui/emptyState";
+import { SyntheticEvent, useState, useTransition } from "react";
+import { manageMentorRequestAction } from "@/libs/actions/bookings.actions";
+import { handleError, handleSuccess } from "@/utils/helper";
+import { ManageMentorReqType } from "@/types/booking";
 
 export const MentorAvatar = ({
   profilePhoto,
@@ -160,7 +164,62 @@ export const MentorReqAction = ({
 }) => {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab");
-  const { isOpen, openModal } = useModalContext();
+  const { isOpen, openModal, closeModal } = useModalContext();
+  const [isPending, startTransition] = useTransition();
+
+  const [formData, setFormData] = useState({
+    reason: "",
+    allow: "",
+  });
+
+  const [error, setError] = useState(false);
+
+  const handleApproveMentor = () => {
+    const payload: ManageMentorReqType = {
+      status: "APPROVED",
+    };
+
+    startTransition(async () => {
+      const rsp = await manageMentorRequestAction(data?._id, payload);
+
+      if (rsp?.error) {
+        handleError(rsp?.message);
+      } else {
+        handleSuccess(rsp?.message);
+        closeModal(`approve-${data?._id}`);
+      }
+    });
+  };
+
+  const handleDeclineMentor = (e: SyntheticEvent) => {
+    e.preventDefault();
+
+    if (!formData?.allow) {
+      setError(true);
+      return;
+    }
+
+    setError(false);
+    const payload: ManageMentorReqType = {
+      status: "DECLINED",
+      declineReason: formData?.reason,
+      canReapplyAsMentor: formData?.allow === "allow" ? true : false,
+    };
+
+    startTransition(async () => {
+      const rsp = await manageMentorRequestAction(data?._id, payload);
+
+      if (rsp?.error) {
+        handleError(rsp?.message);
+      } else {
+        handleSuccess(rsp?.message);
+        setError(false);
+        setFormData({ reason: "", allow: "" });
+        closeModal(`decline-${data?._id}`);
+      }
+    });
+  };
+
   return (
     <>
       {recent ? (
@@ -210,7 +269,8 @@ export const MentorReqAction = ({
           actionTitle="Yes, Approve"
           closeTitle="No, Cancel"
           btnSecClass="outline-btn"
-          action={() => {}}
+          action={handleApproveMentor}
+          loading={isPending}
         />
       )}
 
@@ -224,22 +284,26 @@ export const MentorReqAction = ({
           subtitleClass={"font-normal text-center text-grey-300"}
           wrapperClass="!rounded-[20px] max-w-lg! max-h-[90vh] overflow-y-auto no-scrollbar"
         >
-          <section className="space-y-2">
+          <form onSubmit={handleDeclineMentor} className="space-y-2">
             <RadioGroup
-            // onValueChange={field.onChange}
-            // value={field.value}
+              onValueChange={(e) =>
+                setFormData((prev) => ({ ...prev, allow: e }))
+              }
+              value={formData?.allow}
             >
               {declineData.map(({ id, value }) => (
                 <label
-                  htmlFor={value}
+                  htmlFor={id}
                   key={id}
-                  className={`border-Line flex cursor-pointer items-center gap-4 rounded-xl border p-4 text-xs`}
+                  className={`${error ? "border-error" : "border-Line"} flex cursor-pointer items-center gap-4 rounded-xl border p-4 text-xs`}
                 >
-                  <RadioGroupItem value={value} id={value} />
+                  <RadioGroupItem value={id} id={id} required />
                   {value}
                 </label>
               ))}
             </RadioGroup>
+
+            {error && <ErrorMessage message="Choose a decline option" />}
 
             <FormInput
               id="reason"
@@ -247,6 +311,11 @@ export const MentorReqAction = ({
               type="textarea"
               label="Reason for decline"
               placeholder="Enter reason"
+              value={formData?.reason}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, reason: e.target.value }))
+              }
+              required
             />
 
             <DialogFooter className="grid grid-cols-1 gap-3 lg:grid-cols-2">
@@ -255,11 +324,11 @@ export const MentorReqAction = ({
                   No, don’t decline
                 </Button>
               </DialogClose>
-              <Button className="pry-btn" type="button">
+              <Button className="pry-btn" type="submit" loading={isPending}>
                 Yes, decline
               </Button>
             </DialogFooter>
-          </section>
+          </form>
         </ModalWrapper>
       )}
     </>
