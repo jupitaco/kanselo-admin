@@ -6,12 +6,12 @@ import { CopyIcon } from "@/public/svgs/svgs";
 
 const CopyToClipboardBtn = ({
   id,
-  valuToCopy,
+  valueToCopy,
   className,
   title,
 }: {
   id: string | number;
-  valuToCopy: string;
+  valueToCopy: string;
   className?: string;
   title?: string;
 }) => {
@@ -24,7 +24,7 @@ const CopyToClipboardBtn = ({
   const [clicked, setClicked] = useState<boolean>(false);
   const handleCopy = () => {
     setClicked(!clicked);
-    handleCopyToClipboard(id, valuToCopy);
+    handleCopyToClipboard(id, valueToCopy);
   };
 
   useEffect(() => {

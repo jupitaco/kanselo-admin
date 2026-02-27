@@ -1,4 +1,4 @@
-import { PayoutType } from "./payout";
+import { PayoutType } from "./transactions";
 
 export type ResetPassword = {
   email: string;

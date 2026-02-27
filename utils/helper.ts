@@ -65,6 +65,14 @@ export const formatDate = (date: Date, monthType?: "short" | "long") => {
   });
 };
 
+export const formatTime = (date: string) => {
+  return new Date(date).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "numeric",
+  });
+};
+
 export const getStatusColors = (status: string) => {
   const statusLower = status?.toLowerCase();
 
@@ -78,15 +86,21 @@ export const getStatusColors = (status: string) => {
       "verified",
       "confirmed",
       "requested",
+      "credit",
     ].includes(statusLower)
   ) {
     return "success";
   }
 
   if (
-    ["declined", "failed", "timedout", "rejected", "cancelled"]?.includes(
-      statusLower,
-    )
+    [
+      "declined",
+      "failed",
+      "timedout",
+      "rejected",
+      "cancelled",
+      "debit",
+    ]?.includes(statusLower)
   ) {
     return "failed";
   }

@@ -3,12 +3,13 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { UserData } from "@/types/auths";
 import { debouncer } from "@/utils/helper";
 import { BookingType } from "@/types/booking";
+import { TransactionType } from "@/types/users";
 
 export type UsePaginateData = {
   total: number;
   limit: number;
   page: number;
-  assets: UserData[] | BookingType[];
+  assets: UserData[] | BookingType[] | TransactionType[];
 };
 
 export default function usePagination(data?: UsePaginateData) {

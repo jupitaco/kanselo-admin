@@ -12,8 +12,8 @@ import { allImages } from "@/public/images/images";
 import { UserData } from "@/types/auths";
 import { BookingType, OfficeDay } from "@/types/booking";
 import { Mentor, Review, Template, BookingTime } from "@/types/global";
-import { TransactionType } from "@/types/payout";
-import { formatDate, formatNumInThousands } from "@/utils/helper";
+import { TransactionType } from "@/types/users";
+import { formatDate, formatNumInThousands, formatTime } from "@/utils/helper";
 import { ReactNode } from "react";
 import { FaEye } from "react-icons/fa6";
 
@@ -852,7 +852,7 @@ export const callRatings = [
   },
 ];
 
-export const transactionAssets: TransactionType[] = [
+export const transactionAssets = [
   {
     id: "1",
     date: "03 Jan 2023",
@@ -935,7 +935,7 @@ export const transactionAssets: TransactionType[] = [
   },
 ];
 
-export const transactionolData: Column<
+export const transactioncolData: Column<
   TransactionType & { action?: ReactNode }
 >[] = [
   {
@@ -950,13 +950,13 @@ export const transactionolData: Column<
   },
   {
     title: "DATE",
-    key: "date",
-    render: (_, record) => <>{record.date}</>,
+    key: "createdAt",
+    render: (_, record) => <>{formatDate(new Date(record.createdAt))}</>,
   },
   {
     title: "TIME",
-    key: "time",
-    render: (_, record) => <>{record.time}</>,
+    key: "updatedAt",
+    render: (_, record) => <>{formatTime(record.createdAt)}</>,
   },
   {
     title: "TYPE",

@@ -5,6 +5,7 @@ import {
   DeclineMentorType,
   MenteesRsp,
   MentorsRsp,
+  TransactionRsp,
 } from "@/types/users";
 import { queryBuilder } from "@/utils/helper";
 
@@ -97,6 +98,10 @@ export const getAllMentees = ({
   );
 };
 
+export const getMenteeById = (menteeId: string) => {
+  return Api.get<MenteesRsp>(`/booking/admin/users/mentees/${menteeId}`, true);
+};
+
 export const getAllMentors = ({
   page = "1",
   limit = "10",
@@ -108,6 +113,21 @@ export const getAllMentors = ({
 }) => {
   return Api.get<MentorsRsp>(
     `/booking/admin/users/mentors?${queryBuilder({ page, limit, search: String(search) })}`,
+    true,
+  );
+};
+
+export const getAllTransaction = ({
+  page = "1",
+  limit = "10",
+  search,
+}: {
+  page?: string;
+  limit?: string;
+  search?: string;
+}) => {
+  return Api.get<TransactionRsp>(
+    `/transactions/admin/all?${queryBuilder({ page, limit, search: String(search) })}`,
     true,
   );
 };
