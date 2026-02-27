@@ -1,101 +1,56 @@
-import Reviews from "@/components/main/users/mentors/reviews";
-import Template from "@/components/main/users/mentors/template";
-import { MentorAction, MentorAvatar } from "@/components/main/verifications/components";
-import Field from "@/components/ui/field";
-import GoBackBtn from "@/components/ui/goBackBtn";
-import { mentorsData } from "@/mock";
-import { DynamicPageProps, Mentor } from "@/types/global";
-import { formatNumInThousands } from "@/utils/helper";
-import { Metadata, } from "next";
-import React, { use } from "react";
-import { BsStarFill } from "react-icons/bs";
+import MentorInfo from "@/components/main/users/mentors/mentorInfo";
+import Reviews from "@/components/main/users/mentors/reviews/reviews";
+import Template from "@/components/main/users/mentors/template/template";
+import { UserInfoSkeleton } from "@/components/main/users/userComponents";
+import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
+import { getMentorByIdApi } from "@/services/apis/bookings.api";
+import { SearchPageParams } from "@/types/global";
+import { Metadata } from "next";
+import React, { Suspense, use } from "react";
 
-
-export async function generateMetadata({ params }: DynamicPageProps): Promise<Metadata> {
-  const { slug } = await params
-  const mentor = mentorsData.find((i) => i.id === slug) as Mentor;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const mentor = await getMentorByIdApi(slug);
 
   return {
-    title: mentor?.name
-  }
+    title: mentor?.ok ? mentor?.body?.data?.fullName : "Mentee",
+  };
 }
 
 export default function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<SearchPageParams>;
 }) {
   const { slug } = use(params);
+  const p = use(searchParams);
 
-  const mentor = mentorsData.find((i) => i.id === slug) as Mentor;
   return (
-    <div className="space-y-4 p-5">
-      <GoBackBtn title="Back" className=" outline-btn btn" />
+    <main className="flex flex-wrap gap-4 p-5">
+      <Suspense fallback={<UserInfoSkeleton userType="Mentor" />}>
+        <MentorInfo mentorId={slug} />
+      </Suspense>
 
-      <main className="flex flex-wrap gap-4">
-
-        <section className="min-h-5/6 w-full space-y-8 rounded-xl bg-white p-4 lg:w-4/12">
-          <MentorAvatar {...mentor} />
-
-          <ul className="space-y-4">
-            <li  >
-              <Field
-                label="Email"
-                value={mentor.email}
-                className="flex flex-col-reverse gap-1"
-                valueClassName="text-start font-semibold" />
-            </li>
-            <li  >
-              <Field
-                label="Phone Number"
-                value={mentor.phoneNumber}
-                className="flex flex-col-reverse gap-1"
-                valueClassName="text-start font-semibold" />
-            </li>
-            <li  >
-              <Field
-                label="per session"
-                value={`₦${formatNumInThousands(mentor.sessionRate)}`}
-                className="flex flex-col-reverse gap-1"
-                valueClassName="text-start font-semibold" />
-            </li>
-
-            <li  >
-              <Field
-                label="Bio"
-                value={mentor.bio}
-                className="flex flex-col gap-1"
-                valueClassName="text-start" />
-            </li>
-
-            <li className="flex items-center justify-between gap-3">
-              <h5 className="font-semibold">Rating</h5>
-              <h5 className="flex items-center gap-1 font-semibold">
-                <BsStarFill className="rated" />
-                <span>{mentor.rating}.0</span>
-              </h5>
-            </li>
-          </ul>
-
-          <MentorAction data={mentor} />
+      <aside className="flex-1 space-y-8">
+        <section className="space-y-4 rounded-xl bg-white p-4">
+          <div className="flex items-center justify-between gap-4">
+            <h4 className="font-semibold">Templates</h4>
+          </div>
+          <Suspense fallback={<TableSkeleton columns={3} />}>
+            <Template mentorId={slug} params={p} />
+          </Suspense>
         </section>
 
-        <aside className="flex-1 space-y-8">
-          <section className="space-y-4 rounded-xl bg-white p-4">
-            <div className="flex items-center justify-between gap-4">
-              <h4 className="font-semibold">Templates</h4>
-            </div>
-            <Template />
-          </section>
-          <section className="space-y-4 rounded-xl bg-white p-4">
-            <div className="flex items-center justify-between gap-4">
-              <h4 className="font-semibold">Reviews</h4>
-            </div>
-            <Reviews />
-          </section>
-
-        </aside>
-      </main>
-    </div>
+        <Suspense fallback={<TableSkeleton columns={3} />}>
+          <Reviews mentorId={slug} params={p} />
+        </Suspense>
+      </aside>
+    </main>
   );
 }

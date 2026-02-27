@@ -4,12 +4,18 @@ import { UserData } from "@/types/auths";
 import { debouncer } from "@/utils/helper";
 import { BookingType } from "@/types/booking";
 import { TransactionType } from "@/types/users";
+import { ReviewType, TemplateType } from "@/types/template";
 
 export type UsePaginateData = {
   total: number;
   limit: number;
   page: number;
-  assets: UserData[] | BookingType[] | TransactionType[];
+  assets:
+    | UserData[]
+    | BookingType[]
+    | TransactionType[]
+    | TemplateType[]
+    | ReviewType[];
 };
 
 export default function usePagination(data?: UsePaginateData) {

@@ -1,12 +1,10 @@
 "use client";
 import Field from "@/components/ui/field";
 import { useModalContext } from "@/context/modalContext";
-import { Mentor } from "@/types/global";
 import Image from "next/image";
 import { WarningIcon } from "@/components/logout/logout";
 import Button from "@/components/ui/button";
 import ActionModals from "@/components/ui/modals/actionModals";
-import { FiEye } from "react-icons/fi";
 import { LuSquareCheck, LuSquareX } from "react-icons/lu";
 import ModalWrapper from "@/components/ui/modals/modalWrapper";
 import { DialogClose, DialogFooter } from "@/components/ui/modals/dialog";
@@ -21,6 +19,9 @@ import { usePaginationContext } from "@/context/paginateContext";
 import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
 import TablePagination from "@/components/ui/tableComponent/tablePagination";
 import { EmptyState } from "@/components/ui/emptyState";
+import { deleteUserAction } from "@/libs/actions/users.actions";
+import { handleError, handleSuccess } from "@/utils/helper";
+import { useTransition } from "react";
 
 export const MentorAvatar = ({
   profilePhoto,
@@ -132,7 +133,7 @@ export const MentorRequest = () => {
       ) : (
         <ul className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {data?.assets?.map((item, idx) => (
-            <MentorCard key={idx} data={item} />
+            <MentorCard key={idx} data={item as UserData} />
           ))}
         </ul>
       )}
@@ -268,7 +269,13 @@ export const MentorReqAction = ({
   );
 };
 
-export const MentorAction = ({ data }: { data: UserData }) => {
+export const UserAction = ({
+  data,
+  userType,
+}: {
+  userType: string;
+  data: UserData;
+}) => {
   const { isOpen, openModal } = useModalContext();
   return (
     <>
@@ -277,13 +284,13 @@ export const MentorAction = ({ data }: { data: UserData }) => {
           className="alt-btn w-full"
           onClick={() => openModal(`suspend-${data?._id}`)}
         >
-          Suspend Mentor
+          Suspend {userType}
         </Button>
         <Button
           className="outline-btn border-error! text-error! w-full"
           onClick={() => openModal(`delete-${data?._id}`)}
         >
-          Delete Mentor
+          Delete {userType}
         </Button>
       </div>
 
@@ -319,7 +326,23 @@ export const MentorAction = ({ data }: { data: UserData }) => {
 };
 
 export const MenteeAction = ({ data }: { data: UserData }) => {
-  const { isOpen, openModal } = useModalContext();
+  const { isOpen, openModal, closeModal } = useModalContext();
+
+  const [isPending, startTransition] = useTransition();
+
+  const handleDeleteUser = () => {
+    startTransition(async () => {
+      const rsp = await deleteUserAction(data?._id, "/administrator");
+
+      if (rsp?.error) {
+        handleError(rsp?.message);
+      } else {
+        handleSuccess(rsp?.message);
+        closeModal(`delete-${data?._id}`);
+      }
+    });
+  };
+
   return (
     <>
       <div className="space-y-3">

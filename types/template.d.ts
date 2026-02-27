@@ -1,4 +1,5 @@
 import { ApiResponse } from "./auths";
+import { BookedMenteeType, BookedMentorType } from "./booking";
 
 export type TemplateType = {
   _id: string;
@@ -52,4 +53,26 @@ export type TemplatesRsp = ApiResponse & {
 
 export type TemplateRsp = ApiResponse & {
   data: TemplateType;
+};
+
+export type ReviewType = {
+  _id: string;
+  userId: BookedMenteeType;
+  mentorId: BookedMentorType;
+  bookingId: string;
+  ratingText: string;
+  stars: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ReviewRsp = ApiResponse & {
+  data: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    ratings: ReviewType[];
+  };
 };

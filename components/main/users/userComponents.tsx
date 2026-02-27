@@ -1,7 +1,6 @@
 "use client";
 import {
   admincolData,
-  bookingAssets,
   menteesColData,
   mentorsColData,
   recentBookingColData,
@@ -19,6 +18,10 @@ import { UserData } from "@/types/auths";
 import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
 import TablePagination from "@/components/ui/tableComponent/tablePagination";
 import Search from "@/components/ui/search";
+import Skeleton from "@/components/ui/skeleton/skeleton";
+import { BsStarFill } from "react-icons/bs";
+import Button from "@/components/ui/button";
+import { BookingType } from "@/types/booking";
 
 export const RecentMentorApplicationTable = ({
   data,
@@ -80,12 +83,24 @@ export const MentorReviewsTable = () => {
 };
 
 export const MenteeConsultationTable = () => {
+  const { data, isPending } = usePaginationContext();
+  if (data?.assets?.length === 0) {
+    return <EmptyState title="No Data" subTitle="No mentees data" />;
+  }
+
   return (
-    <TableComponent
-      title="Booking & Scheduling"
-      columns={recentBookingColData}
-      data={bookingAssets}
-    />
+    <>
+      {isPending ? (
+        <TableSkeleton />
+      ) : (
+        <TableComponent
+          title="Booking & Scheduling"
+          columns={recentBookingColData}
+          data={data?.assets as BookingType[]}
+        />
+      )}
+      <TablePagination />
+    </>
   );
 };
 
@@ -143,3 +158,52 @@ export const UserHeader = ({ pageTitle }: { pageTitle: string }) => {
     </header>
   );
 };
+
+export function UserInfoSkeleton({ userType }: { userType: string }) {
+  return (
+    <section className="min-h-5/6 w-full space-y-8 rounded-xl bg-white p-4 lg:w-4/12">
+      <div className="border-grey-200 space-y-3 overflow-hidden rounded-xl border bg-white">
+        <Skeleton className="h-60!" />
+
+        <div className="space-y-2 p-4">
+          <Skeleton className="h-4! w-20!" />
+          <Skeleton className="h-4! w-40!" />
+        </div>
+      </div>
+
+      <ul className="space-y-6">
+        <li className="space-y-3">
+          <h5 className="font-semibold">Bio</h5>
+          <Skeleton className="h-4! w-40!" />
+          <Skeleton className="h-4! w-40!" />
+        </li>
+        <li className="space-y-1">
+          <h5 className="flex items-center gap-1">
+            $<Skeleton className="h-4! w-20!" />
+          </h5>
+          <p className="text-grey-400 text-xs font-medium">per session</p>
+        </li>
+        <li className="flex items-center justify-between gap-3">
+          <h5 className="font-semibold">Consultations</h5>
+          <Skeleton className="h-4! w-40!" />
+        </li>
+        <li className="flex items-center justify-between gap-3">
+          <h5 className="font-semibold">Rating</h5>
+          <h5 className="flex items-center gap-1 font-semibold">
+            <BsStarFill className="rated" />
+            <Skeleton className="h-4! w-6!" />
+          </h5>
+        </li>
+      </ul>
+
+      <Skeleton className="h-10!" />
+
+      <div className="space-y-3">
+        <Button className="alt-btn w-full">Suspend {userType}</Button>
+        <Button className="outline-btn border-error! text-error! w-full">
+          Delete {userType}
+        </Button>
+      </div>
+    </section>
+  );
+}

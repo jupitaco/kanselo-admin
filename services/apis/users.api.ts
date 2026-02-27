@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/types/auths";
+import { ApiResponse, UserData } from "@/types/auths";
 import { Api } from "./api";
 import {
   ApproveMentorType,
@@ -8,6 +8,8 @@ import {
   TransactionRsp,
 } from "@/types/users";
 import { queryBuilder } from "@/utils/helper";
+import { BookingRsp } from "@/types/booking";
+import { ReviewRsp, TemplatesRsp } from "@/types/template";
 
 export const blockUserByIdApi = (userId: string) => {
   return Api.patch<
@@ -43,17 +45,12 @@ export const unblockUserByIdApi = (userId: string) => {
   );
 };
 
-export const suspendUserByIdApi = (userId: string) => {
+export const toggleUserAccessByIdApi = (
+  userId: string,
+  isSuspended: boolean,
+) => {
   return Api.patch<void, ApiResponse>(
-    `/user/admin/users/${userId}/suspend`,
-    undefined,
-    true,
-  );
-};
-
-export const unsuspendUserByIdApi = (userId: string) => {
-  return Api.patch<void, ApiResponse>(
-    `/user/admin/users/${userId}/unsuspend`,
+    `/user/admin/users/${userId}/${isSuspended ? "unsuspend" : "suspend"}`,
     undefined,
     true,
   );
@@ -99,7 +96,25 @@ export const getAllMentees = ({
 };
 
 export const getMenteeById = (menteeId: string) => {
-  return Api.get<MenteesRsp>(`/booking/admin/users/mentees/${menteeId}`, true);
+  return Api.get<ApiResponse & { data: UserData }>(
+    `/booking/admin/users/mentees/${menteeId}`,
+    true,
+  );
+};
+
+export const getAllMenteeBookingsApi = async ({
+  page = "1",
+  limit = "10",
+  menteeId,
+}: {
+  page?: string;
+  limit?: string;
+  menteeId: string;
+}) => {
+  return Api.get<BookingRsp>(
+    `/booking/user/${menteeId}?${queryBuilder({ page, limit })}`,
+    true,
+  );
 };
 
 export const getAllMentors = ({
@@ -113,6 +128,28 @@ export const getAllMentors = ({
 }) => {
   return Api.get<MentorsRsp>(
     `/booking/admin/users/mentors?${queryBuilder({ page, limit, search: String(search) })}`,
+    true,
+  );
+};
+
+export const getMentorTemplatesApi = async (
+  mentorId: string,
+  page = "1",
+  limit = "5",
+) => {
+  return Api.get<TemplatesRsp>(
+    `/templates/user/${mentorId}?${queryBuilder({ page, limit })}`,
+    true,
+  );
+};
+
+export const getMentorReviewsApi = async (
+  mentorId: string,
+  page = "1",
+  limit = "20",
+) => {
+  return Api.get<ReviewRsp>(
+    `/ratings/mentor/${mentorId}?${queryBuilder({ page, limit })}`,
     true,
   );
 };

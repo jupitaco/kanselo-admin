@@ -96,7 +96,8 @@ export type UserData = {
   consultationFee: number;
   isSuperAdmin: boolean;
   blocked: boolean;
-  suspended: boolean;
+  isSuspended: boolean;
+  suspendedAt: string;
   admindeactivated: boolean;
   uniqueVerificationCode: string;
   passwordRetries: number;
@@ -112,6 +113,7 @@ export type UserData = {
   totalBookings: number;
   totalTemplatesBought: number;
   totalTemplatesSold: number;
+  averageRating: number;
   createdAt: string;
   updatedAt: string;
 };

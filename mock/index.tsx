@@ -12,8 +12,14 @@ import { allImages } from "@/public/images/images";
 import { UserData } from "@/types/auths";
 import { BookingType, OfficeDay } from "@/types/booking";
 import { Mentor, Review, Template, BookingTime } from "@/types/global";
+import { ReviewType, TemplateType } from "@/types/template";
 import { TransactionType } from "@/types/users";
-import { formatDate, formatNumInThousands, formatTime } from "@/utils/helper";
+import {
+  formatDate,
+  formatDateToLocale,
+  formatNumInThousands,
+  formatTime,
+} from "@/utils/helper";
 import { ReactNode } from "react";
 import { FaEye } from "react-icons/fa6";
 
@@ -288,32 +294,33 @@ export const reviewsData: Review[] = [
   },
 ];
 
-export const reviewColData: Column<Review>[] = [
+export const reviewColData: Column<ReviewType>[] = [
   {
     title: "CUSTOMER",
-    key: "name",
+    key: "userId",
     render: (_, record) => (
       <AvatarCard
-        image={record?.image}
-        label={`${record?.name}`}
-        subtext={record?.date}
+        image={record?.userId?.profilePhoto || allImages.noAvatar}
+        label={`${record?.userId?.fullName}`}
+        subtext={formatDateToLocale(new Date(record?.createdAt))}
       />
     ),
   },
 
   {
     title: "REVIEW",
-    key: "text",
+    key: "ratingText",
     cellClassName: "min-w-40 max-w-40 text-grey-300",
-    render: (_, record) => <>{record?.text} </>,
+    render: (_, record) => <>{record?.ratingText} </>,
   },
 
   {
     title: "STARS",
-    key: "rating",
-    render: (_, record) => <StarRatings rating={record?.rating} />,
+    key: "stars",
+    render: (_, record) => <StarRatings rating={record?.stars} />,
   },
 ];
+
 export const sessionData = [
   {
     duration: 30,
@@ -362,15 +369,15 @@ export const templateData: Template[] = [
   },
 ];
 
-export const templateColData: Column<Template & { action?: ReactNode }>[] = [
+export const templateColData: Column<TemplateType>[] = [
   {
     title: "TITLE",
     key: "title",
     render: (_, record) => (
       <AvatarCard
-        image={record?.image}
+        image={record?.coverImage}
         label={`${record?.title}`}
-        subtext={record?.size}
+        subtext={record?.fileSize}
       />
     ),
   },
@@ -383,10 +390,10 @@ export const templateColData: Column<Template & { action?: ReactNode }>[] = [
 
   {
     title: "SOLD",
-    key: "totalSales",
+    key: "totalSold",
     cellClassName: " text-center",
 
-    render: (_, record) => <>{record?.totalSales}</>,
+    render: (_, record) => <>{record?.totalSold}</>,
   },
 ];
 
@@ -683,9 +690,9 @@ export const recentBookingColData: Column<BookingType>[] = [
     key: "userId",
     render: (_, record) => (
       <AvatarCard
-        image={record?.userId?.profilePhoto || allImages.noAvatar}
-        label={`${record?.userId?.fullName}`}
-        subtext={`${record?.userId?.city} ${record?.userId?.country}`}
+        image={record?.mentorId?.profilePhoto || allImages.noAvatar}
+        label={`${record?.mentorId?.fullName}`}
+        subtext={`${record?.mentorId?.city} ${record?.mentorId?.country}`}
       />
     ),
   },

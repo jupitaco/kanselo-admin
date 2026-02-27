@@ -5,7 +5,10 @@ import FormInput from "@/components/ui/formInput";
 import ActionModals from "@/components/ui/modals/actionModals";
 import { useModalContext } from "@/context/modalContext";
 import { createAdminAction } from "@/libs/actions/auth.actions";
-import { deleteUserAction } from "@/libs/actions/users.actions";
+import {
+  deleteUserAction,
+  toggleUserAccessAction,
+} from "@/libs/actions/users.actions";
 import { CreateAdminType, UserData } from "@/types/auths";
 import { handleError, handleSuccess } from "@/utils/helper";
 import { useRouter } from "next/navigation";
@@ -113,6 +116,7 @@ export const CreateAdmin = () => {
 };
 
 export const AdminAction = ({ data }: { data: UserData }) => {
+  console.log("data>>", data);
   const { isOpen, openModal, closeModal } = useModalContext();
 
   const [isPending, startTransition] = useTransition();
@@ -126,6 +130,23 @@ export const AdminAction = ({ data }: { data: UserData }) => {
       } else {
         handleSuccess(rsp?.message);
         closeModal(`delete-${data?._id}`);
+      }
+    });
+  };
+
+  const handleManageUser = () => {
+    startTransition(async () => {
+      const rsp = await toggleUserAccessAction(
+        data?._id,
+        data?.isSuspended,
+        "/administrator",
+      );
+
+      if (rsp?.error) {
+        handleError(rsp?.message);
+      } else {
+        handleSuccess(rsp?.message);
+        closeModal(`access-${data?._id}`);
       }
     });
   };
@@ -147,17 +168,18 @@ export const AdminAction = ({ data }: { data: UserData }) => {
         </Button>
       </div>
 
-      {isOpen[`suspend-${data?._id}`] && (
+      {isOpen[`access-${data?._id}`] && (
         <ActionModals
           icon={<WarningIcon />}
-          id={`suspend-${data?._id}`}
-          title="Suspend Admin"
-          subTitle="Are you sure you want to suspend this admin?"
+          id={`access-${data?._id}`}
+          title={data?.isSuspended ? "Reinstate User" : "Suspend User"}
+          subTitle={`Are you sure you want to ${data?.isSuspended ? "reinstate" : "suspend"} this admin?`}
           subtitleClass="text-grey-300!"
           actionTitle="Yes, Suspend"
           closeTitle="No, Cancel"
           btnSecClass="outline-btn"
-          action={() => {}}
+          action={handleManageUser}
+          loading={isPending}
         />
       )}
 
