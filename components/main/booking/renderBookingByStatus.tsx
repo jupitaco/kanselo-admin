@@ -15,7 +15,7 @@ export default async function RenderBookingByStatus({
   const activeTab = searchParams?.tab || "pending";
 
   const rsp = await getAllBookingsApi({
-    status: searchParams?.tab?.toUpperCase() || "NEW",
+    status: activeTab?.toUpperCase(),
     page: searchParams?.page || "1",
   });
 

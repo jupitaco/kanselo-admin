@@ -1,21 +1,26 @@
 import { Api } from "./api";
-import { ApiResponse } from "@/types/auths";
-import { getUser } from "../session";
 import { PayoutRsp } from "@/types/payout";
 import { queryBuilder } from "@/utils/helper";
 
-export const getPayoutAccounts = async (page = "1", limit = "10") => {
-  const user = await getUser();
+export const getAllPayoutReqApi = ({
+  page = "1",
+  limit = "10",
+  status,
+}: {
+  page?: string;
+  limit?: string;
+  status?: string;
+}) => {
   return Api.get<PayoutRsp>(
-    `/payouts/${user?._id}?${queryBuilder({ page, limit })}`,
+    `/payouts/admin/all?${queryBuilder({ page, limit, status: String(status) })}`,
+    true,
   );
 };
 
-export const widthdrawalApi = async (body: { amount: number }) => {
-  const user = await getUser();
-  return Api.post<{ amount: number }, ApiResponse>(
-    `/payouts/${user?._id}/withdraw`,
-    body,
+export const approvePayoutReqApi = (payoutId: string) => {
+  return Api.patch<void, PayoutRsp>(
+    `/payouts/admin/${payoutId}/approve`,
+    undefined,
     true,
   );
 };

@@ -39,6 +39,11 @@ export const SidebarData = [
     title: "Transactions",
     url: "/transactions",
   },
+  {
+    icon: <TicketStarIcon />,
+    title: "Payouts",
+    url: "/payouts",
+  },
 
   {
     icon: <SettingsIcon />,

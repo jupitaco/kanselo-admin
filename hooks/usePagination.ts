@@ -5,6 +5,7 @@ import { debouncer } from "@/utils/helper";
 import { BookingType } from "@/types/booking";
 import { TransactionType } from "@/types/users";
 import { ReviewType, TemplateType } from "@/types/template";
+import { PayoutWithdrawalType } from "@/types/payout";
 
 export type UsePaginateData = {
   total: number;
@@ -15,7 +16,8 @@ export type UsePaginateData = {
     | BookingType[]
     | TransactionType[]
     | TemplateType[]
-    | ReviewType[];
+    | ReviewType[]
+    | PayoutWithdrawalType[];
 };
 
 export default function usePagination(data?: UsePaginateData) {

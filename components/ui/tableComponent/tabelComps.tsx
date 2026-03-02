@@ -3,7 +3,7 @@
 import Image, { StaticImageData } from "next/image";
 import CopyToClipboardBtn from "../copyToClipboardBtn";
 import { GoDotFill } from "react-icons/go";
-import { getStatusColors } from "@/utils/helper";
+import { formatDate, formatTime, getStatusColors } from "@/utils/helper";
 import TableComponent, { Column } from "./tableComponent";
 import { AllAssets } from "@/types/global";
 
@@ -59,3 +59,29 @@ export default function TableWrapper({
 }) {
   return <TableComponent title={title} columns={columns} data={data} />;
 }
+
+export const TableDate = ({
+  date,
+  className,
+}: {
+  className?: string;
+  date: string;
+}) => {
+  return (
+    <div className={`${className} flex flex-col gap-1`}>
+      {formatDate(new Date(date))}
+    </div>
+  );
+};
+
+export const TableTime = ({
+  date,
+  className,
+}: {
+  className?: string;
+  date: string;
+}) => {
+  return (
+    <div className={`${className} flex flex-col gap-1`}>{formatTime(date)}</div>
+  );
+};

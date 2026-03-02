@@ -4,7 +4,6 @@ import { allImages } from "@/public/images/images";
 import Hambugger from "./hambugger";
 import "./navbar.css";
 import { usePathname, useSearchParams } from "next/navigation";
-import { RenderNotifs } from "./notifications/notifications";
 import { useAuthContext } from "@/context/authContext";
 import { UserData } from "@/types/auths";
 import { useEffect } from "react";
@@ -39,8 +38,6 @@ const TopBar = ({ user }: { user: UserData }) => {
             <h2 className="font-bold capitalize">{title}</h2>
           </article>
           <article className="hidden flex-1 items-center justify-end gap-2 lg:flex">
-            <RenderNotifs />
-
             <div className="flex items-center justify-end gap-2 rounded-full! px-3 py-2">
               <figure className="relative size-12 overflow-hidden rounded-xl">
                 <Image
