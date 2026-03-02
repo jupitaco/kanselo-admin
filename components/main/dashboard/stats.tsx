@@ -36,9 +36,7 @@ export const Stats = async () => {
         <TemplatesIcon />
         <div className="space-y-3">
           <small className="text-grey-300">Total Templates</small>
-          <h4 className="font-semibold">
-            ${formatNumInThousands(statsData?.totalTemplates?.value)}
-          </h4>
+          <h4 className="font-semibold">{statsData?.totalTemplates?.value}</h4>
         </div>
       </li>
       <li className="flex items-center gap-2">

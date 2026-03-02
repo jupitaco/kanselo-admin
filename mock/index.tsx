@@ -1,3 +1,4 @@
+import { PayoutAction } from "@/components/main/payouts/payoutTable";
 import { AdminAction } from "@/components/main/settings/admin/createAdmin";
 import { TransactionAction } from "@/components/main/transactions/transactionTable";
 import { MentorReqAction } from "@/components/main/verifications/components";
@@ -6,12 +7,15 @@ import { StarRatings } from "@/components/ui/starRatings";
 import {
   AvatarCard,
   OrderStatus,
+  TableDate,
+  TableTime,
 } from "@/components/ui/tableComponent/tabelComps";
 import { Column } from "@/components/ui/tableComponent/tableComponent";
 import { allImages } from "@/public/images/images";
 import { UserData } from "@/types/auths";
 import { BookingType, OfficeDay } from "@/types/booking";
 import { Mentor, Review, Template, BookingTime } from "@/types/global";
+import { PayoutWithdrawalType } from "@/types/payout";
 import { ReviewType, TemplateType } from "@/types/template";
 import { TransactionType } from "@/types/users";
 import {
@@ -1139,5 +1143,45 @@ export const admincolData: Column<UserData & { action?: ReactNode }>[] = [
     title: "ACTION",
     key: "action",
     render: (_, record) => <AdminAction data={record} />,
+  },
+];
+
+export const payoutColData: Column<
+  PayoutWithdrawalType & { actions?: ReactNode }
+>[] = [
+  {
+    title: "AMOUNT",
+    key: "amount",
+    render: (_, record) => (
+      <>
+        {record?.type === "WALLET" ? "-" : "+"}$
+        {formatNumInThousands(record?.amount)}
+      </>
+    ),
+  },
+  {
+    title: "DATE",
+    key: "createdAt",
+    render: (_, record) => <TableDate date={record.createdAt} />,
+  },
+  {
+    title: "TIME",
+    key: "updatedAt",
+    render: (_, record) => <TableTime date={record.createdAt} />,
+  },
+  {
+    title: "TYPE",
+    key: "type",
+    render: (_, record) => <>{record?.type}</>,
+  },
+  {
+    title: "STATUS",
+    key: "status",
+    render: (_, record) => <OrderStatus status={record?.status} />,
+  },
+  {
+    title: "ACTIONS",
+    key: "actions",
+    render: (_, record) => <PayoutAction data={record} />,
   },
 ];

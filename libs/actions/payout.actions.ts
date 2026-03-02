@@ -1,11 +1,11 @@
 "use server";
 
-import { widthdrawalApi } from "@/services/apis/payout.api";
+import { approvePayoutReqApi } from "@/services/apis/payout.api";
 import { revalidatePath } from "next/cache";
 
-export const widthdrawalAction = async (body: { amount: number }) => {
+export const approvePayyoutReqAction = async (payoutId: string) => {
   try {
-    const rsp = await widthdrawalApi(body);
+    const rsp = await approvePayoutReqApi(payoutId);
 
     if (!rsp?.ok) {
       return {
@@ -17,7 +17,7 @@ export const widthdrawalAction = async (body: { amount: number }) => {
     revalidatePath("/payouts");
     return {
       error: false,
-      message: rsp?.body.message || "Template created successfully",
+      message: rsp?.body.message || "Payout approved successfully",
     };
   } catch (err) {
     console.log(err);
