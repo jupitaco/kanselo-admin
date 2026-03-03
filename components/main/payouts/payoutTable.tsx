@@ -7,7 +7,10 @@ import TablePagination from "@/components/ui/tableComponent/tablePagination";
 import TableSkeleton from "@/components/ui/tableComponent/tableSkeleton";
 import { useModalContext } from "@/context/modalContext";
 import { usePaginationContext } from "@/context/paginateContext";
-import { approvePayyoutReqAction } from "@/libs/actions/payout.actions";
+import {
+  approvePayyoutReqAction,
+  declinePayoutReqAction,
+} from "@/libs/actions/payout.actions";
 import { payoutColData } from "@/mock";
 import { PayoutWithdrawalType } from "@/types/payout";
 import { handleError, handleSuccess } from "@/utils/helper";
@@ -51,14 +54,37 @@ export const PayoutAction = ({ data }: { data: PayoutWithdrawalType }) => {
     });
   };
 
+  const handleDeclinePayout = () => {
+    startTransition(async () => {
+      const rsp = await declinePayoutReqAction(data?._id);
+
+      if (rsp?.error) {
+        handleError(rsp?.message);
+      } else {
+        handleSuccess(rsp?.message);
+        closeModal(`decline-${data?._id}`);
+      }
+    });
+  };
+
   return (
     <>
-      <Button
-        className="pry-btn w-full"
-        onClick={() => openModal(`approve-${data?._id}`)}
-      >
-        Approve
-      </Button>
+      {!["completed", "failed"]?.includes(data?.status?.toLowerCase()) && (
+        <div className="flex items-center gap-3">
+          <Button
+            className="pry-btn w-fit"
+            onClick={() => openModal(`approve-${data?._id}`)}
+          >
+            Approve
+          </Button>
+          <Button
+            className="alt-btn w-fit"
+            onClick={() => openModal(`decline-${data?._id}`)}
+          >
+            Decline
+          </Button>
+        </div>
+      )}
 
       {isOpen[`approve-${data?._id}`] && (
         <ActionModals
@@ -71,6 +97,21 @@ export const PayoutAction = ({ data }: { data: PayoutWithdrawalType }) => {
           closeTitle="No, Cancel"
           btnSecClass="outline-btn"
           action={handleApprovePayout}
+          loading={isPending}
+        />
+      )}
+
+      {isOpen[`decline-${data?._id}`] && (
+        <ActionModals
+          icon={<WarningIcon />}
+          id={`decline-${data?._id}`}
+          title="Decline Payout"
+          subTitle={`Are you sure you want to decline this payout?`}
+          subtitleClass="text-grey-300!"
+          actionTitle={`Yes, Decline`}
+          closeTitle="No, Cancel"
+          btnSecClass="outline-btn"
+          action={handleDeclinePayout}
           loading={isPending}
         />
       )}

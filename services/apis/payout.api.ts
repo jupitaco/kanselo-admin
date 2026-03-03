@@ -24,3 +24,11 @@ export const approvePayoutReqApi = (payoutId: string) => {
     true,
   );
 };
+
+export const declinePayoutReqApi = (payoutId: string) => {
+  return Api.patch<void, PayoutRsp>(
+    `/payouts/admin/${payoutId}/decline`,
+    undefined,
+    true,
+  );
+};
