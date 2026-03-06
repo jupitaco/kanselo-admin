@@ -71,13 +71,20 @@ export const Basic = () => {
         />
 
         <FormInput
-          id="phoneNumber"
-          name="phoneNumber"
-          type="tel"
-          label="Phone Number"
-          placeholder="Enter"
-          value={formData?.phoneNumber}
-          onChange={handleChange}
+          id="role"
+          name="role"
+          type="shadSelect"
+          label="Role"
+          placeholder="Select"
+          value={formData.role}
+          shadcnSelectData={[
+            { label: "Admin", value: "admin" },
+            { label: "Super Admin", value: "superAdmin" },
+          ]}
+          onSelectItem={(e) =>
+            setFormData((prev) => ({ ...prev, ["role"]: e }))
+          }
+          className="w-full"
           disabled={!edit}
         />
 

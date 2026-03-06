@@ -1,5 +1,3 @@
-import { PayoutType } from "./transactions";
-
 export type ResetPassword = {
   email: string;
   code: string;
@@ -78,6 +76,12 @@ export type AvailableHoursType = {
   _id: string;
 };
 
+export type PayoutAccountType = {
+  accountNumber: string;
+  accountName: string;
+  bankName: string;
+};
+
 export type UserData = {
   _id: string;
   fullName: string;
@@ -108,7 +112,7 @@ export type UserData = {
   displayWalletBalance: boolean;
   goals: string[];
   availableHours: AvailableHoursType;
-  payoutAccount: PayoutType;
+  payoutAccount: PayoutAccountType;
   mentorApprovalStatus: string;
   totalBookings: number;
   totalTemplatesBought: number;

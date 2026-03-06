@@ -9,7 +9,7 @@ export type TransactionType = {
 
 export type PayoutWithdrawalType = {
   _id: string;
-  userId: string;
+  userId: { _id: string; email: string };
   amount: number;
   status: string;
   type: string;
