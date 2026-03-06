@@ -43,7 +43,7 @@ const ResetPasswordForm = () => {
     if (state?.error) {
       handleError(state?.message);
     } else if (!state?.error && state?.message) {
-      handleSuccess(state?.message, push, "/login");
+      handleSuccess(state?.message, push, "/signin");
     }
   }, [state, push]);
 

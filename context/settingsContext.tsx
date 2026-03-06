@@ -25,7 +25,7 @@ export const SettingsProvider: FC<{
     fullName: userData?.fullName || "",
     email: userData?.email || "",
     profilePhoto: userData?.profilePhoto || "",
-    phoneNumber: userData?.phoneNumber || "",
+    role: userData?.role?.toLowerCase() || "",
     country: userData?.country || "",
     state: userData?.state || "",
     city: userData?.city || "",

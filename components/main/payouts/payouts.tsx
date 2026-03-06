@@ -3,14 +3,14 @@ import { PayoutTable } from "./payoutTable";
 import { PaginationProvider } from "@/context/paginateContext";
 import { SearchPageParams } from "@/types/global";
 import { ErrorUI } from "@/components/ui/emptyState";
-import { getAllPayoutReqApi } from "@/services/apis/payout.api";
+import { getAllPayoutsReqApi } from "@/services/apis/payout.api";
 
 export default async function Payouts({
   params,
 }: {
   params: SearchPageParams;
 }) {
-  const rsp = await getAllPayoutReqApi({ page: params?.page || "1" });
+  const rsp = await getAllPayoutsReqApi({ page: params?.page || "1" });
 
   if (!rsp?.ok) {
     return <ErrorUI code={rsp?.body?.code} message={rsp?.body?.message} />;

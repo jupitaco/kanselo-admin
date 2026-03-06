@@ -23,6 +23,7 @@ import { SyntheticEvent, useState, useTransition } from "react";
 import { manageMentorRequestAction } from "@/libs/actions/bookings.actions";
 import { handleError, handleSuccess } from "@/utils/helper";
 import { ManageMentorReqType } from "@/types/booking";
+import { FiEye } from "react-icons/fi";
 
 export const MentorAvatar = ({
   profilePhoto,
@@ -224,9 +225,9 @@ export const MentorReqAction = ({
     <>
       {recent ? (
         <div className="inline-flex gap-3">
-          {/* <button>
+          <button onClick={() => openModal(`view-${data?._id}`)}>
             <FiEye size={20} />
-          </button> */}
+          </button>
           <button onClick={() => openModal(`approve-${data?._id}`)}>
             <LuSquareCheck className="text-success-600" size={20} />
           </button>
@@ -331,6 +332,88 @@ export const MentorReqAction = ({
           </form>
         </ModalWrapper>
       )}
+
+      {isOpen[`view-${data?._id}`] && <ViewMentor data={data} />}
     </>
+  );
+};
+
+export const ViewMentor = ({ data }: { data: UserData }) => {
+  return (
+    <ModalWrapper
+      id={`view-${data?._id}`}
+      title="Mentor Registration Request"
+      headerClass="border-0! justify-center items-center"
+      subtitleClass={"font-normal text-center text-grey-300"}
+      wrapperClass="!rounded-[20px] max-w-lg! max-h-[90vh] overflow-y-auto no-scrollbar"
+    >
+      <article className="flex flex-col justify-between gap-5">
+        <Field
+          label="Full Name"
+          value={data?.fullName}
+          className="flex items-center justify-between"
+          labelClassName="text-grey-500 font-semibold"
+          valueClassName="text-primary font-semibold"
+        />
+        <Field
+          label="Email"
+          value={data?.email}
+          className="flex items-center justify-between"
+          labelClassName="text-grey-500 font-semibold"
+          valueClassName="text-primary font-semibold"
+        />
+
+        <Field
+          label="Phone"
+          value={data?.phoneNumber}
+          className="flex items-center justify-between"
+          labelClassName="text-grey-500 font-semibold"
+          valueClassName="text-primary font-semibold"
+        />
+
+        <Field
+          label="Years of experience"
+          value={"5"}
+          className="flex items-center justify-between"
+          labelClassName="text-grey-500 font-semibold"
+          valueClassName="text-primary font-semibold"
+        />
+
+        <Field
+          label="Industry(s)"
+          value={
+            <ul>
+              {["Sales & marketing", "email marketing"].map((item, idx) => (
+                <li key={idx} className="text-primary font-semibold">
+                  {item}
+                  {idx === ["Sales & marketing", "email marketing"]?.length - 1
+                    ? ","
+                    : ""}
+                </li>
+              ))}
+            </ul>
+          }
+          className="flex items-center justify-between"
+          labelClassName="text-grey-500 font-semibold"
+          valueClassName="text-primary font-semibold"
+        />
+
+        <Field
+          label="Consultation fee"
+          value={`$${data?.consultationFee}`}
+          className="flex items-center justify-between"
+          labelClassName="text-grey-500 font-semibold"
+          valueClassName="text-primary font-semibold"
+        />
+
+        <Field
+          label="Bio"
+          value={`${data?.bio?.slice(0, 100)}...`}
+          className="flex flex-col justify-between gap-3"
+          labelClassName="text-grey-500 font-semibold"
+          valueClassName="text-grey-300 font-semibold"
+        />
+      </article>
+    </ModalWrapper>
   );
 };

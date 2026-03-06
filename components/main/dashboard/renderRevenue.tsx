@@ -13,7 +13,7 @@ export default async function RenderRevenue({
   startDate,
   endDate,
 }: SearchPageParams) {
-  const initStartDate = getDayXAgo(30);
+  const initStartDate = getDayXAgo(7);
   const initEndDate = new Date();
 
   const rsp = await getRevenueGraphByDateApi(
