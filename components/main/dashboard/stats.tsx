@@ -42,7 +42,7 @@ export const Stats = async () => {
       <li className="flex items-center gap-2">
         <IncomeIcon />
         <div className="space-y-3">
-          <small className="text-grey-300">Total Income</small>
+          <small className="text-grey-300">Total Revenue</small>
           <h4 className="font-semibold">
             ${formatNumInThousands(statsData?.totalRevenue?.value)}
           </h4>
